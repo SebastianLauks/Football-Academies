@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.drawer.DrawerActivity"
-            android:theme="@style/AppThemeNoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".view.academies.AcademiesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
