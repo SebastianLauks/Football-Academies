@@ -1,4 +1,4 @@
-package lauks.sebastian.footballacademies.view.news
+package lauks.sebastian.footballacademies.view.events
 
 
 import android.os.Bundle

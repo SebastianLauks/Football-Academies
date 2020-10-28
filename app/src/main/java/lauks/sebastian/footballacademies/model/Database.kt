@@ -1,12 +1,14 @@
 package lauks.sebastian.footballacademies.model
 
 import lauks.sebastian.footballacademies.model.academy.AcademyDao
+import lauks.sebastian.footballacademies.model.news.NewsDao
 
 class Database private constructor(){
 
     //All DAOs here
-    var academyDao = AcademyDao()
-        private set
+    val academyDao = AcademyDao()
+    val newsDao = NewsDao()
+
 
     companion object{
         // @Volatile - Writes to this property are immediately visible to other threads

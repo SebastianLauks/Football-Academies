@@ -3,17 +3,16 @@ package lauks.sebastian.footballacademies.view.drawer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import lauks.sebastian.footballacademies.R
-import lauks.sebastian.footballacademies.view.events.NewsFragment
-import lauks.sebastian.footballacademies.view.news.EventsFragment
+import lauks.sebastian.footballacademies.view.news.NewsFragment
+import lauks.sebastian.footballacademies.view.events.EventsFragment
 import lauks.sebastian.footballacademies.view.squad.SquadFragment
 
 class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -21,14 +20,15 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     lateinit var newsFragment: NewsFragment
     lateinit var eventsFragment: EventsFragment
     lateinit var squadFragment: SquadFragment
+    var actionBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawer)
         setSupportActionBar(toolbar)
 
-        val actionBar = supportActionBar
-        actionBar?.title = getString(R.string.menu_news)
+        actionBar = supportActionBar
+
 
 
         val drawerToggle = ActionBarDrawerToggle(this, drawerLayout,toolbar, R.string.open, R.string.close)
@@ -46,7 +46,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             .replace(R.id.frame_layout, newsFragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
-
+        actionBar?.title = getString(R.string.menu_news)
 
     }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -58,6 +58,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     .replace(R.id.frame_layout, newsFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
+                actionBar?.title = getString(R.string.menu_news)
             }
             R.id.nav_events -> {
                 eventsFragment = EventsFragment()
@@ -66,6 +67,8 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     .replace(R.id.frame_layout, eventsFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
+                actionBar?.title = getString(R.string.menu_events)
+
             }
             R.id.nav_squad -> {
                 squadFragment = SquadFragment()
@@ -74,6 +77,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     .replace(R.id.frame_layout, squadFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
+                actionBar?.title = getString(R.string.menu_squad)
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)

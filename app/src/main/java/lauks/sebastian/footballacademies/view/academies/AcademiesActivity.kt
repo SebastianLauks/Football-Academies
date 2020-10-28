@@ -1,6 +1,5 @@
 package lauks.sebastian.footballacademies.view.academies
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -10,7 +9,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_academies.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
-import lauks.sebastian.footballacademies.viewmodel.AcademiesViewModel
+import lauks.sebastian.footballacademies.viewmodel.academies.AcademiesViewModel
 
 class AcademiesActivity : AppCompatActivity() {
 

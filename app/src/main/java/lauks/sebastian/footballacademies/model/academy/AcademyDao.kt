@@ -9,9 +9,9 @@ class AcademyDao {
     private val academies = MutableLiveData<List<Academy>>()
 
     init {
-        academiesList.add(Academy("1", "Akademia Number One"))
-        academiesList.add(Academy("2", "Akademia Number Two"))
-        academiesList.add(Academy("3", "Akademia Piłkarska Kopnij Piłę"))
+        academiesList.add(Academy("1", "Akademia Pierwsza"))
+        academiesList.add(Academy("2", "Akademia Druga"))
+        academiesList.add(Academy("3", "Akademia Trzecia"))
         academies.value = academiesList
     }
 

@@ -1,4 +1,4 @@
-package lauks.sebastian.footballacademies.viewmodel
+package lauks.sebastian.footballacademies.viewmodel.academies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +8,8 @@ class AcademiesViewModelFactory(private val academyRepository: AcademyRepository
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return AcademiesViewModel(academyRepository) as T
+        return AcademiesViewModel(
+            academyRepository
+        ) as T
     }
 }
