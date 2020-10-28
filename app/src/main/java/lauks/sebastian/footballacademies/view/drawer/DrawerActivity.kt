@@ -2,77 +2,93 @@ package lauks.sebastian.footballacademies.view.drawer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.view.View
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_drawer.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import lauks.sebastian.footballacademies.R
+import lauks.sebastian.footballacademies.view.news.NewsFragment
+import lauks.sebastian.footballacademies.view.events.EventsFragment
+import lauks.sebastian.footballacademies.view.squad.SquadFragment
 
-class DrawerActivity : AppCompatActivity() {
-    lateinit var drawerLayout: DrawerLayout
-    private lateinit var adapter: NavigationRVAdapter
+class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var items = arrayListOf(
-        NavigationItemModel(R.drawable.ic_add_black_24dp, "Home"),
-        NavigationItemModel(R.drawable.baseline_get_app_24, "Music")
-    )
-
+    lateinit var newsFragment: NewsFragment
+    lateinit var eventsFragment: EventsFragment
+    lateinit var squadFragment: SquadFragment
+    var actionBar: ActionBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawer)
-
-        drawerLayout = findViewById(R.id.drawer_layout)
-
-        // Set the toolbar
         setSupportActionBar(toolbar)
 
+        actionBar = supportActionBar
 
-        // Setup Recyclerview's Layout
-        navigation_rv.layoutManager = LinearLayoutManager(this)
-        navigation_rv.setHasFixedSize(true)
 
-        // Update Adapter with item data and highlight the default menu item ('Home' Fragment)
-        updateAdapter(0)
 
-        // Set 'Home' as the default fragment when the app starts
-        val homeFragment = DemoFragment()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.activity_main_content_id, homeFragment).commit()
+        val drawerToggle = ActionBarDrawerToggle(this, drawerLayout,toolbar, R.string.open, R.string.close)
+        drawerToggle.isDrawerIndicatorEnabled = true
+        drawerLayout.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
 
-        // Add Item Touch Listener
-        navigation_rv.addOnItemTouchListener(RecyclerTouchListener(this, object : ClickListener {
-            override fun onClick(view: View, position: Int) {
-                when (position) {
-                    0 -> {
-                        // # Home Fragment
-                        val homeFragment = DemoFragment()
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.activity_main_content_id, homeFragment).commit()
-                    }
-                    1 -> {
-                        // # Music Fragment
-                        val musicFragment = DemoFragment()
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.activity_main_content_id, musicFragment).commit()
-                    }
-                }
-                // Don't highlight the 'Profile' and 'Like us on Facebook' item row
-                if (position != 6 && position != 4) {
-                    updateAdapter(position)
-                }
-                Handler().postDelayed({
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                }, 200)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true) // if it is uncommented, the hamburger icon becomes back arrow
+        
+        navigation_view.setNavigationItemSelectedListener(this)
+
+        newsFragment = NewsFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frame_layout, newsFragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
+        actionBar?.title = getString(R.string.menu_news)
+
+    }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_news -> {
+                newsFragment = NewsFragment()
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, newsFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+                actionBar?.title = getString(R.string.menu_news)
             }
-        }))
+            R.id.nav_events -> {
+                eventsFragment = EventsFragment()
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, eventsFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+                actionBar?.title = getString(R.string.menu_events)
+
+            }
+            R.id.nav_squad -> {
+                squadFragment = SquadFragment()
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, squadFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+                actionBar?.title = getString(R.string.menu_squad)
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 
-    private fun updateAdapter(highlightItemPos: Int) {
-        adapter = NavigationRVAdapter(items, highlightItemPos)
-        navigation_rv.adapter = adapter
-        adapter.notifyDataSetChanged()
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 }

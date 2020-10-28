@@ -1,4 +1,4 @@
-package lauks.sebastian.footballacademies.viewmodel
+package lauks.sebastian.footballacademies.viewmodel.academies
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

@@ -1,5 +1,6 @@
 package lauks.sebastian.footballacademies.view.academies
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.academy_item.view.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.model.academy.Academy
+import lauks.sebastian.footballacademies.view.drawer.DrawerActivity
 
 class AcademiesAdapter(
     private val academiesList: LiveData<List<Academy>>
@@ -17,6 +19,11 @@ class AcademiesAdapter(
         val holder =AcademiesViewHolder(itemView)
 
         //HERE e.g. holder.itemView.setOnClickListener{....
+        holder.itemView.setOnClickListener {
+            val context = it.context
+            val intent = Intent(context, DrawerActivity::class.java)
+            context.startActivity(intent)
+        }
 
         return holder
     }
