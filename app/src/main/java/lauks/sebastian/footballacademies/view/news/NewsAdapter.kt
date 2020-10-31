@@ -30,10 +30,10 @@ class NewsAdapter (private val newsList: LiveData<List<News>>): RecyclerView.Ada
     }
 
 
-    class NewsViewHolder(itemvView: View): RecyclerView.ViewHolder(itemvView){
-        val tvFirstName = itemvView.tv_post_firstname
-        val tvLastName = itemvView.tv_post_lastname
+    class NewsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val tvFirstName = itemView.tv_post_firstname
+        val tvLastName = itemView.tv_post_lastname
         val tvTitle = itemView.tv_post_title
-        val tvContent = itemvView.tv_post_content
+        val tvContent = itemView.tv_post_content
     }
 }

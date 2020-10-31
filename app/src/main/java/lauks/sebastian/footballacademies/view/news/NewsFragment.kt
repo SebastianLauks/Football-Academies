@@ -37,7 +37,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun initUI() {
-        val factory = InjectorUtils.proviceNewsViewModelFactory()
+        val factory = InjectorUtils.provideNewsViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(NewsViewModel::class.java)
 
         news_recycler_view.adapter = NewsAdapter(viewModel.getNewss())
