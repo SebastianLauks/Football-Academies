@@ -25,6 +25,8 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
 
     override fun onBindViewHolder(holder: SquadViewHolder, position: Int) {
         val currentItem = playersList.value!![position]
+        holder.tvFirstname.text = currentItem.firstname
+        holder.tvLastname.text = currentItem.lastname
         holder.tvAge.text = currentItem.age.toString()
         holder.tvHeight.text = currentItem.height.toString()
         holder.tvWeight.text = currentItem.weight.toString()
@@ -41,6 +43,8 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
 
 
     class SquadViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvFirstname = itemView.tv_squad_firstname
+        val tvLastname = itemView.tv_squad_lastname
         val tvHeight = itemView.tv_squad_height_value
         val tvWeight = itemView.tv_squad_weight_value
         val tvPrefFoot = itemView.tv_squad_pref_foot_value
