@@ -3,9 +3,11 @@ package lauks.sebastian.footballacademies.utilities
 import android.provider.ContactsContract
 import lauks.sebastian.footballacademies.model.Database
 import lauks.sebastian.footballacademies.model.academy.AcademyRepository
+import lauks.sebastian.footballacademies.model.events.EventRepository
 import lauks.sebastian.footballacademies.model.news.NewsRepository
 import lauks.sebastian.footballacademies.model.squad.SquadRepository
 import lauks.sebastian.footballacademies.viewmodel.academies.AcademiesViewModelFactory
+import lauks.sebastian.footballacademies.viewmodel.events.EventsViewModelFactory
 import lauks.sebastian.footballacademies.viewmodel.news.NewsViewModelFactory
 import lauks.sebastian.footballacademies.viewmodel.squad.SquadViewModelFactory
 
@@ -27,6 +29,11 @@ object InjectorUtils {
     fun provideSquadViewModelFactory(): SquadViewModelFactory{
         val squadRepository= SquadRepository.getInstance(Database.getInstance().squadDao)
         return SquadViewModelFactory(squadRepository)
+    }
+
+    fun provideEventsViewModelFactory(): EventsViewModelFactory{
+        val eventRepository = EventRepository.getInstance(Database.getInstance().eventsDao)
+        return EventsViewModelFactory(eventRepository)
     }
 
 }

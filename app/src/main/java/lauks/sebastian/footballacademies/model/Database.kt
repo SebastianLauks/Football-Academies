@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.model
 
 import lauks.sebastian.footballacademies.model.academy.AcademyDao
+import lauks.sebastian.footballacademies.model.events.EventsDao
 import lauks.sebastian.footballacademies.model.news.NewsDao
 import lauks.sebastian.footballacademies.model.squad.SquadDao
 
@@ -10,6 +11,7 @@ class Database private constructor(){
     val academyDao = AcademyDao()
     val newsDao = NewsDao()
     val squadDao = SquadDao()
+    val eventsDao = EventsDao()
 
 
     companion object{
