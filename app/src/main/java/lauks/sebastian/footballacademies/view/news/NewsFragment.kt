@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.view.news
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.activity_create_news.*
 import kotlinx.android.synthetic.main.fragment_news.*
 
 import lauks.sebastian.footballacademies.R
@@ -22,6 +25,7 @@ class NewsFragment : Fragment() {
 
     private lateinit var viewModel: NewsViewModel
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +36,7 @@ class NewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         initUI()
     }
@@ -46,7 +51,19 @@ class NewsFragment : Fragment() {
         viewModel.getNewss().observe(this, Observer { _ ->
             (news_recycler_view.adapter as NewsAdapter).notifyDataSetChanged()
         })
+
+        setupFab()
     }
+
+
+    private fun setupFab(){
+        val fab = news_fab_create
+        fab.setOnClickListener {
+            val intent = Intent(activity, CreateNewsActivity::class.java)
+            activity!!.startActivity(intent)
+        }
+    }
+
 
 
 }
