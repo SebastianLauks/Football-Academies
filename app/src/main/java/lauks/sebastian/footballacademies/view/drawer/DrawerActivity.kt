@@ -1,8 +1,11 @@
 package lauks.sebastian.footballacademies.view.drawer
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -13,6 +16,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.view.news.NewsFragment
 import lauks.sebastian.footballacademies.view.events.EventsFragment
+import lauks.sebastian.footballacademies.view.events.FilterEventsActivity
 import lauks.sebastian.footballacademies.view.squad.SquadFragment
 
 class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +25,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     lateinit var eventsFragment: EventsFragment
     lateinit var squadFragment: SquadFragment
     var actionBar: ActionBar? = null
+    var filterButton: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +53,11 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             .commit()
         actionBar?.title = getString(R.string.menu_news)
 
+
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        hideFilterButton()
         when (item.itemId) {
             R.id.nav_news -> {
                 newsFragment = NewsFragment()
@@ -68,7 +76,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
                 actionBar?.title = getString(R.string.menu_events)
-
+                showFilterButton()
             }
             R.id.nav_squad -> {
                 squadFragment = SquadFragment()
@@ -90,5 +98,31 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.events_toolbar_menu, menu)
+        filterButton = menu!!.findItem(R.id.filter_button)
+        hideFilterButton()
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.filter_button -> {
+                val intent = Intent(applicationContext, FilterEventsActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showFilterButton(){
+        filterButton!!.isVisible = true
+    }
+    private fun hideFilterButton(){
+        filterButton!!.isVisible = false
     }
 }

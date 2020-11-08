@@ -21,6 +21,6 @@
         <item>Turniej</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_event_title">Nowe wydarzenie</string>
+    <string name="filter_event_title">Filtr wydarzeń</string>
 </resources>
