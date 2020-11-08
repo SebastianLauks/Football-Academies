@@ -21,16 +21,16 @@ class CreateNewsActivity : AppCompatActivity() {
         }
 
         bt_news_add.setOnClickListener {
-            if(et_news_title.text.isEmpty()){
-                Toast.makeText(applicationContext, R.string.create_post_empty_title,Toast.LENGTH_SHORT).show()
-            }else if (et_news_content.text.isEmpty()){
-                Toast.makeText(applicationContext, R.string.create_post_empty_content,Toast.LENGTH_SHORT).show()
-            }else{
-                //HERE WILL BE ADDING NEW POST LOGIC
-                et_news_content.setText("")
-                et_news_title.setText("")
-                Toast.makeText(applicationContext, R.string.create_post_added,Toast.LENGTH_SHORT).show()
-                finish()
+            when {
+                et_news_title.text.isEmpty() -> Toast.makeText(applicationContext, R.string.create_post_empty_title,Toast.LENGTH_SHORT).show()
+                et_news_content.text.isEmpty() -> Toast.makeText(applicationContext, R.string.create_post_empty_content,Toast.LENGTH_SHORT).show()
+                else -> {
+                    //HERE WILL BE ADDING NEW POST LOGIC
+                    et_news_content.setText("")
+                    et_news_title.setText("")
+                    Toast.makeText(applicationContext, R.string.create_post_added,Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             }
 
         }

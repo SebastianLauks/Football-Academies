@@ -9,10 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.news.CreateNewsActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"
+        <activity android:name=".view.events.CreateEventActivity"></activity>
+        <activity
+            android:name=".view.news.CreateNewsActivity"
             android:label="@string/create_news_title"
-            ></activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".view.drawer.DrawerActivity"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.view.events
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,7 +38,7 @@ class EventsFragment : Fragment() {
         initUI()
     }
 
-    fun initUI(){
+    private fun initUI(){
         val factory = InjectorUtils.provideEventsViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(EventsViewModel::class.java)
 
@@ -49,6 +50,16 @@ class EventsFragment : Fragment() {
             (events_recycler_view.adapter as EventsAdapter).notifyDataSetChanged()
         })
 
+        setupFav()
+
+    }
+
+    private fun setupFav(){
+        val fab = events_fab_create
+        fab.setOnClickListener {
+            val intent = Intent(context, CreateEventActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }
