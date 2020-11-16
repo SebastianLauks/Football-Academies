@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:370716636294:android:03d1dead4a538104028d07",
+        "android_client_info": {
+          "package_name": "lauks.sebastian.footballacademies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "370716636294-g1d8c9c4hj6n7tob2rkmqsa5vof3a8go.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4JaE4BztOhDNG7jncKrUbM-fjr9inH_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "370716636294-g1d8c9c4hj6n7tob2rkmqsa5vof3a8go.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:370716636294:android:e28eb04b45e7c81a028d07",
         "android_client_info": {
           "package_name": "lauks.sebastian.fotballacademies"

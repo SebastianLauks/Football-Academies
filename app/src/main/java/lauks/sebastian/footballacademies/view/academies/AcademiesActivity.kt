@@ -32,6 +32,8 @@ class AcademiesActivity : AppCompatActivity() {
         val factory = InjectorUtils.provideAcademiesViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(AcademiesViewModel::class.java)
 
+        viewModel.startListening()
+
         academies_recycler_view.adapter = AcademiesAdapter(viewModel.getAcademies())
         academies_recycler_view.layoutManager = GridLayoutManager(this, 2)
         academies_recycler_view.setHasFixedSize(true)

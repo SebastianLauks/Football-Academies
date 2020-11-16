@@ -8,6 +8,7 @@ import lauks.sebastian.footballacademies.model.academy.AcademyRepository
 class AcademiesViewModel(private val academyRepository: AcademyRepository) : ViewModel() {
 
     fun getAcademies() = academyRepository.getAcademies()
-    fun addAcademy(academy: Academy) = academyRepository.addAcademy(academy)
+    fun addAcademy(academyName: String) = academyRepository.addAcademy(academyName)
+    fun startListening() = academyRepository.startListening()
 
 }

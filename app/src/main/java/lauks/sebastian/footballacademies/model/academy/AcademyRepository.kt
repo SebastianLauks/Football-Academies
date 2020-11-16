@@ -2,9 +2,12 @@ package lauks.sebastian.footballacademies.model.academy
 
 class AcademyRepository private constructor(private val academyDao: AcademyDao){
 
-    fun addAcademy(academy: Academy) {
+    fun addAcademy(academyName: String) {
+        val academy = Academy("-1",academyName)
         academyDao.addAcademy(academy)
     }
+
+    fun startListening() = academyDao.startListening()
 
     fun getAcademies() = academyDao.getAcademies()
 
