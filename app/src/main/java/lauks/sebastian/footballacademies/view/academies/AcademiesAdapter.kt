@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.view.academies
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ class AcademiesAdapter(
         holder.itemView.setOnClickListener {
             val context = it.context
             val intent = Intent(context, DrawerActivity::class.java)
+            intent.putExtra("chosenAcademyId", academiesList.value!![holder.adapterPosition].id)
             context.startActivity(intent)
         }
 

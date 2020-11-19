@@ -2,11 +2,17 @@ package lauks.sebastian.footballacademies.model.news
 
 import lauks.sebastian.footballacademies.model.academy.AcademyDao
 import lauks.sebastian.footballacademies.model.academy.AcademyRepository
+import java.util.*
 
 class NewsRepository private constructor(private val newsDao: NewsDao){
 
+    fun startListening(chosenAcademyId:String) = newsDao.startListening(chosenAcademyId)
 
     fun getNewss() = newsDao.getNewss()
+
+    fun addNews(authorId: String, title: String, content: String, creationDate: Date){
+        newsDao.addNews(authorId, title, content, creationDate)
+    }
 
     companion object{
         // Singleton instantiation you already know and love

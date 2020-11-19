@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.news_item.view.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.model.news.News
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class NewsAdapter (private val newsList: LiveData<List<News>>): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -27,6 +30,8 @@ class NewsAdapter (private val newsList: LiveData<List<News>>): RecyclerView.Ada
         holder.tvLastName.text = currentItem.author.lastname
         holder.tvTitle.text = currentItem.title
         holder.tvContent.text = currentItem.content
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+        holder.tvCreationDate.text = formatter.format(Date(currentItem.creationDate))
     }
 
 
@@ -35,5 +40,6 @@ class NewsAdapter (private val newsList: LiveData<List<News>>): RecyclerView.Ada
         val tvLastName = itemView.tv_post_lastname
         val tvTitle = itemView.tv_post_title
         val tvContent = itemView.tv_post_content
+        val tvCreationDate = itemView.tv_post_date
     }
 }

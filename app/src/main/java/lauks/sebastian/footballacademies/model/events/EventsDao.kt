@@ -10,7 +10,7 @@ class EventsDao {
     private val eventsLiveData = MutableLiveData<List<Event>>()
 
     init {
-        val event1 = Event("001", "Mecz", Date(), "Wrocław", "Notatki", mutableListOf(),
+        val event1 = Event("001", "Mecz", Date().time, "Wrocław", "Notatki", mutableListOf(),
             mutableListOf())
         eventsList.add(event1)
         eventsLiveData.value = eventsList

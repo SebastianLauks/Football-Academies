@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_news.*
 
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
+import lauks.sebastian.footballacademies.view.drawer.DrawerActivity
 import lauks.sebastian.footballacademies.viewmodel.news.NewsViewModel
 
 /**
@@ -45,8 +46,14 @@ class NewsFragment : Fragment() {
         val factory = InjectorUtils.provideNewsViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(NewsViewModel::class.java)
 
+        val chosenAcademyId = activity!!.intent.extras!!.get("chosenAcademyId").toString()
+        viewModel.startListening(chosenAcademyId)
+
         news_recycler_view.adapter = NewsAdapter(viewModel.getNewss())
-        news_recycler_view.layoutManager = LinearLayoutManager(activity)
+        val linearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager.reverseLayout = true
+        linearLayoutManager.stackFromEnd = true
+        news_recycler_view.layoutManager = linearLayoutManager
         news_recycler_view.setHasFixedSize(true)
         viewModel.getNewss().observe(this, Observer { _ ->
             (news_recycler_view.adapter as NewsAdapter).notifyDataSetChanged()

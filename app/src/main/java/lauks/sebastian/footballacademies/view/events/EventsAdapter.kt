@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.event_item.view.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.model.events.Event
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EventsAdapter(private val eventsList: LiveData<List<Event>>):RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
@@ -36,7 +38,8 @@ class EventsAdapter(private val eventsList: LiveData<List<Event>>):RecyclerView.
         holder.tvType.text = currentItem.type
         holder.tvPlace.text = currentItem.place
         holder.tvContent.text = currentItem.notes
-        holder.tvTimestamp.text = currentItem.date.toString()
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+        holder.tvTimestamp.text = formatter.format(Date(currentItem.date))
 
 
     }
