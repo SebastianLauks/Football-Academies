@@ -33,7 +33,7 @@ class CreateNewsActivity : AppCompatActivity() {
                 et_news_title.text.isEmpty() -> Toast.makeText(applicationContext, R.string.create_post_empty_title,Toast.LENGTH_SHORT).show()
                 et_news_content.text.isEmpty() -> Toast.makeText(applicationContext, R.string.create_post_empty_content,Toast.LENGTH_SHORT).show()
                 else -> {
-                    val loggedUserId = "user0001" // HERE FROM SHARE PREF
+                    val loggedUserId = "user0001" // ToDo HERE FROM SHARE PREF
                     viewModel.addNews(loggedUserId, et_news_title.text.toString(), et_news_content.text.toString(), Date())
 
                     et_news_content.setText("")

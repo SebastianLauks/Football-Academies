@@ -46,7 +46,6 @@ class NewsDao {
                 if(snapshot.value != null){
 
                     snapshot.children.forEach { child ->
-                        Log.d("snapHere", child.toString())
                         @Suppress("UNCHECKED_CAST") val newsMap = child.value as HashMap<String, *>
                         val id = newsMap["id"].toString()
                         val academyId = newsMap["academyId"].toString()
@@ -67,7 +66,7 @@ class NewsDao {
                         newsList.add(news)
                     }
                 }
-                newsList.sortBy { it.creationDate }
+                newsList.sortByDescending { it.creationDate }
                 newsLiveData.value = newsList
             }
 

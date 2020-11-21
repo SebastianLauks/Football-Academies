@@ -6,21 +6,30 @@ import android.app.TimePickerDialog
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_create_event.*
 import lauks.sebastian.footballacademies.R
+import lauks.sebastian.footballacademies.utilities.InjectorUtils
+import lauks.sebastian.footballacademies.viewmodel.events.EventsViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateEventActivity : AppCompatActivity() {
 
     val cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"))
+    private lateinit var viewModel: EventsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_event)
+
+        val factory = InjectorUtils.provideEventsViewModelFactory()
+        viewModel = ViewModelProvider(this, factory).get(EventsViewModel::class.java)
+
 
 
         bt_event_cancel.setOnClickListener {
@@ -49,8 +58,15 @@ class CreateEventActivity : AppCompatActivity() {
                     toast.show()
                 }
                 else -> {
-
-                    //HERE ADD
+                    val loggedUserId = "user0001" // ToDo HERE FROM SHARE PREF
+                    Log.d("dataaa", et_events_time.text.toString())
+                    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+                    viewModel.addEvent(
+                        loggedUserId,
+                        resources.getStringArray(R.array.event_types_array)[spinner_events_type.selectedItemPosition],
+                        SimpleDateFormat("dd/MM/yyyy HH:mm").parse(et_events_date.text.toString() + " " + et_events_time.text.toString()).time,
+                        et_events_place.text.toString(),
+                        et_events_notes.text.toString())
 
                     spinner_events_type.setSelection(0)
                     et_events_date.setText("")

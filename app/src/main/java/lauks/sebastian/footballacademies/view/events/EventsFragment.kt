@@ -15,10 +15,11 @@ import kotlinx.android.synthetic.main.fragment_events.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
 import lauks.sebastian.footballacademies.viewmodel.events.EventsViewModel
+import kotlin.math.log
+import androidx.core.os.HandlerCompat.postDelayed
+import android.os.Handler
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class EventsFragment : Fragment() {
 
     private lateinit var viewModel: EventsViewModel
@@ -42,10 +43,30 @@ class EventsFragment : Fragment() {
         val factory = InjectorUtils.provideEventsViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(EventsViewModel::class.java)
 
+        val chosenAcademyId = activity!!.intent.extras!!.get("chosenAcademyId").toString()
+        val loggedUserId = "user0001" //Todo take userid from shared preferences...
 
-        events_recycler_view.adapter = EventsAdapter(viewModel.getEvents())
-        events_recycler_view.layoutManager = LinearLayoutManager(activity)
+        val hideRefreshingIndicator = {
+            swipe_refresh_layout.isRefreshing = false
+        }
+
+        viewModel.startListening(chosenAcademyId, loggedUserId, hideRefreshingIndicator)
+
+        events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), viewModel)
+        val linearLayoutManager = LinearLayoutManager(activity)
+//        linearLayoutManager.reverseLayout = true
+//        linearLayoutManager.stackFromEnd = true
+        events_recycler_view.layoutManager = linearLayoutManager
         events_recycler_view.setHasFixedSize(true)
+
+        swipe_refresh_layout.setOnRefreshListener {
+
+            viewModel.startListening(chosenAcademyId, loggedUserId, hideRefreshingIndicator)
+//            Handler().postDelayed(Runnable {
+//                // Stop animation (This will be after 3 seconds)
+//
+//            }, 4000) // Delay in millis
+        }
         viewModel.getEvents().observe(this, Observer {
             (events_recycler_view.adapter as EventsAdapter).notifyDataSetChanged()
         })

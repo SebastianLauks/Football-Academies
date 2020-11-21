@@ -5,16 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".view.events.EventsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/events_recycler_view"
-        android:paddingTop="4dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:paddingBottom="72dp"
-        android:clipToPadding="false"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/event_item"/>
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/events_recycler_view"
+            android:paddingTop="4dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="72dp"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/event_item"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/events_fab_create"

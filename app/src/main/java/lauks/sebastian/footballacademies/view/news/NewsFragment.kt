@@ -51,8 +51,8 @@ class NewsFragment : Fragment() {
 
         news_recycler_view.adapter = NewsAdapter(viewModel.getNewss())
         val linearLayoutManager = LinearLayoutManager(activity)
-        linearLayoutManager.reverseLayout = true
-        linearLayoutManager.stackFromEnd = true
+//        linearLayoutManager.reverseLayout = true
+//        linearLayoutManager.stackFromEnd = true
         news_recycler_view.layoutManager = linearLayoutManager
         news_recycler_view.setHasFixedSize(true)
         viewModel.getNewss().observe(this, Observer { _ ->

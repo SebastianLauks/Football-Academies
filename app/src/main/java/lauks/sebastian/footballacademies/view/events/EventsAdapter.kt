@@ -8,15 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.event_item.view.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.model.events.Event
+import lauks.sebastian.footballacademies.viewmodel.events.EventsViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EventsAdapter(private val eventsList: LiveData<List<Event>>):RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
+class EventsAdapter(
+    private val eventsList: LiveData<List<Event>>,
+    private val viewModel: EventsViewModel
+) : RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.event_item, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.event_item, parent, false)
         val holder = EventViewHolder(itemView)
 
         //HERE e.g. holder.itemView.setOnClickListener{....
+        holder.switchButton.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.changePresence(eventsList.value!![holder.adapterPosition].id, isChecked)
+        }
 
         return holder
 
@@ -34,6 +42,8 @@ class EventsAdapter(private val eventsList: LiveData<List<Event>>):RecyclerView.
         //This is written 01.11.20 at 23:31. Take it into account
 
         //holder.switchButton ????
+        val loggedUser = "user0001"
+        holder.switchButton.isChecked = eventsList.value!![position].confirmedParticipants.contains(loggedUser)
 
         holder.tvType.text = currentItem.type
         holder.tvPlace.text = currentItem.place
@@ -45,7 +55,7 @@ class EventsAdapter(private val eventsList: LiveData<List<Event>>):RecyclerView.
     }
 
 
-    class EventViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvType = itemView.tv_event_type
         val tvPlace = itemView.tv_event_place
         val tvTimestamp = itemView.tv_event_timestamp
