@@ -33,6 +33,7 @@ class EventsDao {
         this.academyKey = academyKey
         eventsInFB = Firebase.database.reference.child("Events")
 
+        eventsList.clear()
         eventsInFB.orderByChild("academyId").equalTo(academyKey)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
