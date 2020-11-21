@@ -6,7 +6,7 @@ import java.util.*
 
 class NewsRepository private constructor(private val newsDao: NewsDao){
 
-    fun startListening(chosenAcademyId:String) = newsDao.startListening(chosenAcademyId)
+    fun startListening(chosenAcademyId:String, hideRefreshingIndicator: () -> Unit) = newsDao.startListening(chosenAcademyId, hideRefreshingIndicator)
 
     fun getNewss() = newsDao.getNewss()
 

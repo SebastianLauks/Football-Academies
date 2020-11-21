@@ -8,7 +8,7 @@ class NewsViewModel(private val newsRepository: NewsRepository): ViewModel() {
 
     fun getNewss() = newsRepository.getNewss()
 
-    fun startListening(chosenAcademyId: String) = newsRepository.startListening(chosenAcademyId)
+    fun startListening(chosenAcademyId: String, hideRefreshingIndicator: () -> Unit) = newsRepository.startListening(chosenAcademyId, hideRefreshingIndicator)
 
     fun addNews(authorId: String, title: String, content: String, creationDate: Date){
         newsRepository.addNews(authorId, title, content, creationDate)

@@ -50,6 +50,7 @@ class EventsFragment : Fragment() {
             swipe_refresh_layout.isRefreshing = false
         }
 
+        swipe_refresh_layout.isRefreshing = true
         viewModel.startListening(chosenAcademyId, loggedUserId, hideRefreshingIndicator)
 
         events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), viewModel)

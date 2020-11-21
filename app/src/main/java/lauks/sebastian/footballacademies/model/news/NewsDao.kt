@@ -31,12 +31,12 @@ class NewsDao {
         newsLiveData.value = newsList
     }
 
-    fun startListening(academyKey: String){
+    fun startListening(academyKey: String, hideRefreshingIndicator: () -> Unit){
         this.academyKey = academyKey
         newsInFB = Firebase.database.reference.child("News")
 //        academiesInFB = Firebase.database.reference.child("Academies")
 
-        newsInFB.orderByChild("academyId").equalTo(academyKey).addValueEventListener(object : ValueEventListener{
+        newsInFB.orderByChild("academyId").equalTo(academyKey).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
@@ -68,6 +68,7 @@ class NewsDao {
                 }
                 newsList.sortByDescending { it.creationDate }
                 newsLiveData.value = newsList
+                hideRefreshingIndicator()
             }
 
         })

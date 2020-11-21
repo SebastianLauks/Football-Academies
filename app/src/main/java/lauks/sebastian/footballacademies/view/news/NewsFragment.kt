@@ -47,7 +47,12 @@ class NewsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory).get(NewsViewModel::class.java)
 
         val chosenAcademyId = activity!!.intent.extras!!.get("chosenAcademyId").toString()
-        viewModel.startListening(chosenAcademyId)
+
+        val hideRefreshingIndicator ={
+            news_swipe_refresh_layout.isRefreshing = false
+        }
+        viewModel.startListening(chosenAcademyId, hideRefreshingIndicator)
+
 
         news_recycler_view.adapter = NewsAdapter(viewModel.getNewss())
         val linearLayoutManager = LinearLayoutManager(activity)
@@ -58,6 +63,10 @@ class NewsFragment : Fragment() {
         viewModel.getNewss().observe(this, Observer { _ ->
             (news_recycler_view.adapter as NewsAdapter).notifyDataSetChanged()
         })
+
+        news_swipe_refresh_layout.setOnRefreshListener {
+            viewModel.startListening(chosenAcademyId, hideRefreshingIndicator)
+        }
 
         setupFab()
     }
