@@ -23,4 +23,10 @@
 
     <string name="create_event_title">Nowe wydarzenie</string>
     <string name="filter_event_title">Filtr wydarzeń</string>
+    <string name="create_academy_empty_name">Proszę uzupełnić nazwę akademii.</string>
+    <string name="create_academy_added">Akademia została utworzona.</string>
+    <string name="join_academy_empty_code">Proszę uzupełnić kod akademii.</string>
+    <string name="join_academy_joined">Dołączono do akademii.</string>
+    <string name="create_academy_title">Utwórz akademię.</string>
+    <string name="join_academy_title">Dołącz do akademii</string>
 </resources>

@@ -7,7 +7,9 @@ class AcademyRepository private constructor(private val academyDao: AcademyDao){
         academyDao.addAcademy(academyName)
     }
 
-    fun startListening() = academyDao.startListening()
+    fun addToSquad(academyCode: String) = academyDao.addToSquad(academyCode)
+
+    fun startListening(loggedUserId: String, hideRefreshingIncdicator: () -> Unit) = academyDao.startListening(loggedUserId, hideRefreshingIncdicator)
 
     fun getAcademies() = academyDao.getAcademies()
 

@@ -1,4 +1,4 @@
 package lauks.sebastian.footballacademies.model.academy
 
-data class Academy(val id: String, var name: String, val code: String) {
+data class Academy(val id: String, var name: String, val code: String, val players: List<String>) {
 }

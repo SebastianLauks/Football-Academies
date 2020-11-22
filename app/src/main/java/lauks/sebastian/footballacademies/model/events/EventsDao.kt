@@ -79,6 +79,7 @@ class EventsDao {
             })
     }
 
+
     private fun getConfirmedParticipants(confParticip: Any?): MutableList<String> {
         val confirmedParticipants = mutableListOf<String>()
         if (confParticip != null) {

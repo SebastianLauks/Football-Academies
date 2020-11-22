@@ -1,5 +1,6 @@
 package lauks.sebastian.footballacademies.view.academies
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -32,7 +33,16 @@ class AcademiesActivity : AppCompatActivity() {
         val factory = InjectorUtils.provideAcademiesViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(AcademiesViewModel::class.java)
 
-        viewModel.startListening()
+
+        val hideRefreshingIncdicator ={
+            academies_swipe_refresh_layout.isRefreshing = false
+        }
+
+
+        val loggedUserId = "user0001" //Todo GET USER IR
+
+        academies_swipe_refresh_layout.isRefreshing = true
+        viewModel.startListening(loggedUserId, hideRefreshingIncdicator)
 
         academies_recycler_view.adapter = AcademiesAdapter(viewModel.getAcademies())
         academies_recycler_view.layoutManager = GridLayoutManager(this, 2)
@@ -40,6 +50,11 @@ class AcademiesActivity : AppCompatActivity() {
         viewModel.getAcademies().observe(this, Observer { _ ->
             (academies_recycler_view.adapter as AcademiesAdapter).notifyDataSetChanged()
          })
+
+
+        academies_swipe_refresh_layout.setOnRefreshListener {
+            viewModel.startListening(loggedUserId, hideRefreshingIncdicator)
+        }
 
         setupFabs()
     }
@@ -58,13 +73,13 @@ class AcademiesActivity : AppCompatActivity() {
 
         }
         fabCreate.setOnClickListener {
-//            val intent = Intent(this, CreateShoppingList::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, CreateAcademyActivity::class.java)
+            startActivity(intent)
         }
 
         fabJoin.setOnClickListener {
-//            val intent = Intent(this, ImportShoppingList::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, JoinAcademyActivity::class.java)
+            startActivity(intent)
         }
     }
 

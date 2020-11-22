@@ -9,6 +9,7 @@ class AcademiesViewModel(private val academyRepository: AcademyRepository) : Vie
 
     fun getAcademies() = academyRepository.getAcademies()
     fun addAcademy(academyName: String) = academyRepository.addAcademy(academyName)
-    fun startListening() = academyRepository.startListening()
+    fun addToSquad(academyCode: String) = academyRepository.addToSquad(academyCode)
+    fun startListening(loggedUserId: String, hideRefreshingIncdicator: () -> Unit) = academyRepository.startListening(loggedUserId, hideRefreshingIncdicator)
 
 }
