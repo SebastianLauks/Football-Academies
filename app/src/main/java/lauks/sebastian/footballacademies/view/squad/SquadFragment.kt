@@ -40,12 +40,28 @@ class SquadFragment : Fragment() {
         val factory = InjectorUtils.provideSquadViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(SquadViewModel::class.java)
 
+
+        val chosenAcademyId = activity!!.intent.extras!!.get("chosenAcademyId").toString()
+
+        val hideRefreshingIndicator = {
+            squad_swipe_refresh_layout.isRefreshing = false
+        }
+        squad_swipe_refresh_layout.isRefreshing = true
+
+        viewModel.fetchPlayers(chosenAcademyId, hideRefreshingIndicator)
+
+
+
         squad_recycler_view.adapter = SquadAdapter(viewModel.getPlayers())
         squad_recycler_view.layoutManager = LinearLayoutManager(activity)
         squad_recycler_view.setHasFixedSize(true)
         viewModel.getPlayers().observe(this, Observer { _ ->
             (squad_recycler_view.adapter as SquadAdapter).notifyDataSetChanged()
         })
+
+        squad_swipe_refresh_layout.setOnRefreshListener {
+            viewModel.fetchPlayers(chosenAcademyId, hideRefreshingIndicator)
+        }
 }
 
 

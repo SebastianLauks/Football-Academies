@@ -1,6 +1,5 @@
 package lauks.sebastian.footballacademies.model.academy
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
@@ -9,7 +8,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import lauks.sebastian.footballacademies.model.academy.Academy
+import lauks.sebastian.footballacademies.model.Player
 import lauks.sebastian.footballacademies.utilities.UniqueCodeGenerator
 
 class AcademyDao {
@@ -41,7 +40,7 @@ class AcademyDao {
                         academyMap["id"].toString(),
                         academyMap["name"].toString(),
                         academyMap["code"].toString(),
-                        getPlayers(academyMap["players"])
+                        getPlayersIds(academyMap["players"])
                     )
 
                     if (academy.players.contains(loggedUserId)) academiesList.add(academy)
@@ -54,7 +53,7 @@ class AcademyDao {
         })
     }
 
-    private fun getPlayers(players: Any?): MutableList<String> {
+    private fun getPlayersIds(players: Any?): MutableList<String> {
         val playersList = mutableListOf<String>()
         if (players != null) {
             @Suppress("UNCHECKED_CAST") val playersMap = players as HashMap<String, *>
@@ -74,7 +73,10 @@ class AcademyDao {
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.value != null) {
-                        Log.d("players", snapshot.value.toString())
+                        snapshot.children.forEach { child ->
+                            val academyMap = child.value as HashMap<String, *>
+                            val playersIds = getPlayersIds(academyMap["players"])
+                        }
                     }
                 }
             })
@@ -92,7 +94,7 @@ class AcademyDao {
                         snapshot.children.forEach { child ->
                             val academyMap = child.value as HashMap<String, *>
                             val academyId = academyMap["id"] as String
-                            val players = getPlayers(academyMap["players"])
+                            val players = getPlayersIds(academyMap["players"])
 
                             if (players.size == 0 || !players.contains(loggedUserId)) {
                                 val newPlayerKey =

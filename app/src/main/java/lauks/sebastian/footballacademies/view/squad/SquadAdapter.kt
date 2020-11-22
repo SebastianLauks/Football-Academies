@@ -3,6 +3,7 @@ package lauks.sebastian.footballacademies.view.squad
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.squad_item.view.*
@@ -25,17 +26,19 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
 
     override fun onBindViewHolder(holder: SquadViewHolder, position: Int) {
         val currentItem = playersList.value!![position]
-        holder.tvFirstname.text = currentItem.firstname
-        holder.tvLastname.text = currentItem.lastname
-        holder.tvAge.text = currentItem.age.toString()
-        holder.tvHeight.text = currentItem.height.toString()
-        holder.tvWeight.text = currentItem.weight.toString()
+        holder.tvSquadHeightUnit.visibility = View.VISIBLE
+        holder.tvSquadWeightUnit.visibility = View.VISIBLE
+        holder.tvFirstname.text = currentItem.firstname ?: ""
+        holder.tvLastname.text = currentItem.lastname ?: ""
+        holder.tvAge.text = if(currentItem.age!=null)currentItem.age.toString() else ""
+        holder.tvHeight.text = if (currentItem.height!= null) currentItem.height.toString() else "".also { holder.tvSquadHeightUnit.visibility = View.GONE }
+        holder.tvWeight.text = if (currentItem.weight!= null) currentItem.weight.toString() else "".also { holder.tvSquadWeightUnit.visibility = View.GONE }
 
         val prefFootText = when(currentItem.prefFoot){
             0 -> "prawa"
             1 -> "lewa"
             2 -> "obie"
-            else -> "nieznana"
+            else -> ""
         }
         holder.tvPrefFoot.text = prefFootText
 
@@ -49,5 +52,7 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
         val tvWeight = itemView.tv_squad_weight_value
         val tvPrefFoot = itemView.tv_squad_pref_foot_value
         val tvAge = itemView.tv_squad_age_value
+        val tvSquadHeightUnit = itemView.tv_squad_height_unit
+        val tvSquadWeightUnit = itemView.tv_squad_weight_unit
     }
 }

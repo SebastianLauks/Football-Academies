@@ -3,6 +3,7 @@ package lauks.sebastian.footballacademies.model.squad
 class SquadRepository private constructor(private val squadDao: SquadDao){
 
     fun getPlayers() = squadDao.getPlayers()
+    fun fetchPlayers(academyId: String, hideRefreshingIndicator: () -> Unit) = squadDao.fetchPlayers(academyId, hideRefreshingIndicator)
 
     companion object{
         // Singleton instantiation you already know and love
