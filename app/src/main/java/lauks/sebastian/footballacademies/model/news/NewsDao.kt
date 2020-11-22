@@ -32,6 +32,7 @@ class NewsDao {
     }
 
     fun startListening(academyKey: String, hideRefreshingIndicator: () -> Unit){
+        newsList.clear()
         this.academyKey = academyKey
         newsInFB = Firebase.database.reference.child("News")
 //        academiesInFB = Firebase.database.reference.child("Academies")
@@ -42,7 +43,6 @@ class NewsDao {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                newsList.clear()
                 if(snapshot.value != null){
 
                     snapshot.children.forEach { child ->

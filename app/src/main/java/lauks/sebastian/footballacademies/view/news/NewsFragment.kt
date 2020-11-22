@@ -51,6 +51,7 @@ class NewsFragment : Fragment() {
         val hideRefreshingIndicator ={
             news_swipe_refresh_layout.isRefreshing = false
         }
+        news_swipe_refresh_layout.isRefreshing = true
         viewModel.startListening(chosenAcademyId, hideRefreshingIndicator)
 
 
