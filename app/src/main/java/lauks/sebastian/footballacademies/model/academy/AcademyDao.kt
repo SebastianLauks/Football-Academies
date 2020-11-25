@@ -64,24 +64,6 @@ class AcademyDao {
         return playersList
     }
 
-    fun fetchSquad(academyId: String) {
-        academiesInFB.orderByChild("id").equalTo(academyId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.value != null) {
-                        snapshot.children.forEach { child ->
-                            val academyMap = child.value as HashMap<String, *>
-                            val playersIds = getPlayersIds(academyMap["players"])
-                        }
-                    }
-                }
-            })
-    }
-
     fun addToSquad(academyCode: String) {
         academiesInFB.orderByChild("code").equalTo(academyCode)
             .addListenerForSingleValueEvent(object : ValueEventListener {

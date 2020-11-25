@@ -15,11 +15,15 @@ import kotlin.collections.HashMap
 class EventsDao {
 
     private lateinit var eventsInFB: DatabaseReference
+    private lateinit var usersInFB: DatabaseReference
     private lateinit var academyKey: String
     private lateinit var loggedUserId: String
     private val eventsList = mutableListOf<Event>()
     private val eventsLiveData = MutableLiveData<List<Event>>()
-    private var observingAcademy: String = "any"
+
+    private var matches: Boolean = true
+    private var tournaments: Boolean = true
+    private var trainings: Boolean = true
 
     init {
 //        val event1 = Event("001", "Mecz", Date().time, "Wrocław", "Notatki", mutableListOf(),
@@ -28,12 +32,23 @@ class EventsDao {
         eventsLiveData.value = eventsList
     }
 
-    fun startListening(academyKey: String, loggedUserId: String, hideRefreshingIndicator: () -> Unit) {
+    fun startListening(
+        academyKey: String,
+        loggedUserId: String,
+        hideRefreshingIndicator: () -> Unit
+    ) {
         this.loggedUserId = loggedUserId
         this.academyKey = academyKey
         eventsInFB = Firebase.database.reference.child("Events")
 
         eventsList.clear()
+
+
+        getUserEventsFilters { matches, tournaments, trainings ->
+            this.matches = matches
+            this.tournaments = tournaments
+            this.trainings = trainings
+        }
         eventsInFB.orderByChild("academyId").equalTo(academyKey)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -47,28 +62,37 @@ class EventsDao {
                         snapshot.children.forEach { child ->
                             @Suppress("UNCHECKED_CAST") val eventMap =
                                 child.value as HashMap<String, *>
-                            val id: String = eventMap["id"].toString()
-                            val authorId: String = eventMap["authorId"].toString()
-                            val academyId: String = eventMap["academyId"].toString()
                             val type: String = eventMap["type"].toString()
-                            val date: Long = eventMap["date"].toString().toLong()
-                            val place: String = eventMap["place"].toString()
-                            val notes: String = eventMap["notes"].toString()
-                            val confirmedParticipants =
-                                getConfirmedParticipants(eventMap["confirmedParticipants"])
+                            var shouldAppear = false
+                            when (type) {
+                                "Turniej" -> if (tournaments) shouldAppear = true
+                                "Mecz" -> if (matches) shouldAppear = true
+                                "Trening" -> if (trainings) shouldAppear = true
+                                else -> shouldAppear = false
+                            }
+                            if(shouldAppear) {
+                                val id: String = eventMap["id"].toString()
+                                val authorId: String = eventMap["authorId"].toString()
+                                val academyId: String = eventMap["academyId"].toString()
+                                val date: Long = eventMap["date"].toString().toLong()
+                                val place: String = eventMap["place"].toString()
+                                val notes: String = eventMap["notes"].toString()
+                                val confirmedParticipants =
+                                    getConfirmedParticipants(eventMap["confirmedParticipants"])
 
-                            val event = Event(
-                                id,
-                                authorId,
-                                academyId,
-                                type,
-                                date,
-                                place,
-                                notes,
-                                confirmedParticipants
-                            ) // ToDo properly download list of users
 
-                            eventsList.add(event)
+                                val event = Event(
+                                    id,
+                                    authorId,
+                                    academyId,
+                                    type,
+                                    date,
+                                    place,
+                                    notes,
+                                    confirmedParticipants
+                                ) // ToDo properly download list of users
+                                eventsList.add(event)
+                            }
                         }
                     }
                     eventsList.sortByDescending { it.date }
@@ -79,6 +103,68 @@ class EventsDao {
             })
     }
 
+
+    fun setUserEventsFilters(matches: Boolean, tournaments: Boolean, trainings: Boolean, finish: () -> Unit) {
+        usersInFB = Firebase.database.reference.child("Users")
+
+        usersInFB.orderByChild("id").equalTo(loggedUserId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value != null) {
+                        snapshot.children.forEach { child ->
+                            val userKey = child.key!!
+                            usersInFB.child(userKey).child("eventsFilters").child("matches")
+                                .setValue(matches)
+                            usersInFB.child(userKey).child("eventsFilters").child("tournaments")
+                                .setValue(tournaments)
+                            usersInFB.child(userKey).child("eventsFilters").child("trainings")
+                                .setValue(trainings)
+
+                            finish()
+                        }
+                    }
+                }
+
+            })
+    }
+
+    fun getUserEventsFilters(updateEventsFiltersCheckboxes: (Boolean, Boolean, Boolean) -> Unit) {
+        usersInFB = Firebase.database.reference.child("Users")
+
+        usersInFB.orderByChild("id").equalTo(loggedUserId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value != null) {
+                        snapshot.children.forEach { child ->
+                            @Suppress("UNCHECKED_CAST") val userMap =
+                                child.value as HashMap<String, *>
+                            val eventFiltersAny = userMap["eventsFilters"]
+                            if (eventFiltersAny == null) {
+                                updateEventsFiltersCheckboxes(true, true, true)
+                            } else {
+                                @Suppress("UNCHECKED_CAST") val eventsFiltersMap =
+                                    eventFiltersAny as HashMap<String, *>
+                                val matches = eventsFiltersMap["matches"].toString().toBoolean()
+                                val tournaments =
+                                    eventsFiltersMap["tournaments"].toString().toBoolean()
+                                val trainings = eventsFiltersMap["trainings"].toString().toBoolean()
+                                updateEventsFiltersCheckboxes(matches, tournaments, trainings)
+
+                            }
+                        }
+                    }
+                }
+
+            })
+    }
 
     private fun getConfirmedParticipants(confParticip: Any?): MutableList<String> {
         val confirmedParticipants = mutableListOf<String>()

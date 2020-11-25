@@ -23,6 +23,9 @@ import android.os.Handler
 class EventsFragment : Fragment() {
 
     private lateinit var viewModel: EventsViewModel
+    private lateinit var hideRefreshingIndicator: () -> Unit
+    private lateinit var chosenAcademyId: String
+    private lateinit var loggedUserId: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,19 +42,28 @@ class EventsFragment : Fragment() {
         initUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        refreshListOfEvents()
+    }
+
+    private fun refreshListOfEvents(){
+        swipe_refresh_layout.isRefreshing = true
+        viewModel.startListening(chosenAcademyId, loggedUserId, hideRefreshingIndicator)
+    }
+
     private fun initUI(){
         val factory = InjectorUtils.provideEventsViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(EventsViewModel::class.java)
 
-        val chosenAcademyId = activity!!.intent.extras!!.get("chosenAcademyId").toString()
-        val loggedUserId = "user0001" //Todo take userid from shared preferences...
+        chosenAcademyId = activity!!.intent.extras!!.get("chosenAcademyId").toString()
+        loggedUserId = "user0001" //Todo take userid from shared preferences...
 
-        val hideRefreshingIndicator = {
+        hideRefreshingIndicator = {
             swipe_refresh_layout.isRefreshing = false
         }
 
-        swipe_refresh_layout.isRefreshing = true
-        viewModel.startListening(chosenAcademyId, loggedUserId, hideRefreshingIndicator)
+        refreshListOfEvents()
 
         events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), viewModel)
         val linearLayoutManager = LinearLayoutManager(activity)
