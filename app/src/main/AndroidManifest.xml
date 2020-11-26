@@ -9,10 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.academies.JoinAcademyActivity"
+        <activity android:name=".view.profile.EditProfileActivity"></activity>
+        <activity
+            android:name=".view.academies.JoinAcademyActivity"
             android:label="@string/join_academy_title"
-            android:theme="@style/DialogTheme" ></activity>
-        <activity android:name=".view.academies.CreateAcademyActivity"
+            android:theme="@style/DialogTheme" />
+        <activity
+            android:name=".view.academies.CreateAcademyActivity"
             android:label="@string/create_academy_title"
             android:theme="@style/DialogTheme" />
         <activity

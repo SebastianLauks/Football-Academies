@@ -35,9 +35,9 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
         holder.tvWeight.text = if (currentItem.weight!= null) currentItem.weight.toString() else "".also { holder.tvSquadWeightUnit.visibility = View.GONE }
 
         val prefFootText = when(currentItem.prefFoot){
-            0 -> "prawa"
-            1 -> "lewa"
-            2 -> "obie"
+            1 -> "prawa"
+            2 -> "lewa"
+            3 -> "obie"
             else -> ""
         }
         holder.tvPrefFoot.text = prefFootText

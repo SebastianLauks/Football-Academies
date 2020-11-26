@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".view.profile.EditProfileActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/linear_layout_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/tv_edit_profile_firstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Imię" />
+
+        <EditText
+            android:id="@+id/et_edit_profile_firstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_edit_profile_lastname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nazwisko" />
+
+        <EditText
+            android:id="@+id/et_edit_profile_lastname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_edit_profile_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wiek" />
+
+        <EditText
+            android:id="@+id/et_edit_profile_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_edit_profile_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wzrost" />
+
+        <EditText
+            android:id="@+id/et_edit_profile_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_edit_profile_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Waga" />
+
+        <EditText
+            android:id="@+id/et_edit_profile_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_edit_profile_pref_foot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Preferowana noga" />
+
+        <Spinner
+            android:id="@+id/spinner_edit_profile_pref_foot"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <Button
+                android:id="@+id/bt_edit_profile_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="8dp"
+                android:background="@android:color/transparent"
+                android:text="ANULUJ" />
+
+            <Button
+                android:id="@+id/bt_edit_profile_apply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="8dp"
+                android:background="@android:color/transparent"
+                android:text="ZASTOSUJ" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

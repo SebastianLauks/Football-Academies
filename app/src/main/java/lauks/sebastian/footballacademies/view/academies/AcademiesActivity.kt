@@ -3,6 +3,8 @@ package lauks.sebastian.footballacademies.view.academies
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -10,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_academies.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
+import lauks.sebastian.footballacademies.view.profile.EditProfileActivity
 import lauks.sebastian.footballacademies.viewmodel.academies.AcademiesViewModel
 
 class AcademiesActivity : AppCompatActivity() {
@@ -29,9 +32,29 @@ class AcademiesActivity : AppCompatActivity() {
         initUI()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.external_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.mi_edit_profile -> {
+                val intent = Intent(applicationContext, EditProfileActivity::class.java)
+                val loggedUserId = "user0001" //Todo GET USER IR
+                intent.putExtra("loggedUserId", loggedUserId)
+                startActivity(intent)
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun initUI(){
         val factory = InjectorUtils.provideAcademiesViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(AcademiesViewModel::class.java)
+
 
 
         val hideRefreshingIncdicator ={

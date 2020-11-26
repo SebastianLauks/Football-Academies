@@ -20,6 +20,12 @@
         <item>Mecz</item>
         <item>Turniej</item>
     </string-array>
+    <string-array name="pref_feet_array">
+        <item>Nie podano</item>
+        <item>Prawa</item>
+        <item>Lewa</item>
+        <item>Obie</item>
+    </string-array>
 
     <string name="create_event_title">Nowe wydarzenie</string>
     <string name="filter_event_title">Filtr wydarzeń</string>
