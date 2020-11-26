@@ -7,6 +7,7 @@ import java.util.*
 class NewsViewModel(private val newsRepository: NewsRepository): ViewModel() {
 
     fun getNewss() = newsRepository.getNewss()
+    fun getUsers() = newsRepository.getUsers()
 
     fun startListening(chosenAcademyId: String, hideRefreshingIndicator: () -> Unit) = newsRepository.startListening(chosenAcademyId, hideRefreshingIndicator)
 

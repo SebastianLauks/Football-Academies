@@ -16,8 +16,11 @@ import kotlin.collections.HashMap
 class NewsDao {
     private lateinit var newsInFB: DatabaseReference
     private lateinit var academiesInFB: DatabaseReference
+    private lateinit var usersInFB: DatabaseReference
     private val newsList = mutableListOf<News>()
     private val newsLiveData = MutableLiveData<List<News>>()
+    private val usersList = mutableListOf<User>()
+    private val usersLiveData = MutableLiveData<List<User>>()
     private lateinit var academyKey: String
 
 
@@ -29,12 +32,15 @@ class NewsDao {
 //        newsList.add(news1)
 //        newsList.add(news2)
         newsLiveData.value = newsList
+        usersLiveData.value = usersList
     }
 
     fun startListening(academyKey: String, hideRefreshingIndicator: () -> Unit){
         newsList.clear()
+        usersList.clear()
         this.academyKey = academyKey
         newsInFB = Firebase.database.reference.child("News")
+        usersInFB = Firebase.database.reference.child("Users")
 //        academiesInFB = Firebase.database.reference.child("Academies")
 
         newsInFB.orderByChild("academyId").equalTo(academyKey).addListenerForSingleValueEvent(object : ValueEventListener{
@@ -50,25 +56,54 @@ class NewsDao {
                         val id = newsMap["id"].toString()
                         val academyId = newsMap["academyId"].toString()
 
-                        @Suppress("UNCHECKED_CAST") val userMap = newsMap["author"] as HashMap<String, *>
-                        val authorId = userMap["id"].toString()
-                        val firstname = userMap["firstname"].toString()
-                        val lastname = userMap["lastname"].toString()
-                        val author = User(authorId,firstname, lastname)
+//                        @Suppress("UNCHECKED_CAST") val userMap = newsMap["author"] as HashMap<String, *>
+                        val authorId = newsMap["authorId"].toString()
+//                        val firstname = userMap["firstname"].toString()
+//                        val lastname = userMap["lastname"].toString()
+//                        val author = User(authorId,firstname, lastname)
 
 
                         val creationDate = newsMap["creationDate"].toString().toLong()
                         val title = newsMap["title"].toString()
                         val content = newsMap["content"].toString()
 
-                        val news = News(id, author, academyId, title, content, creationDate)
+                        val news = News(id, authorId, academyId, title, content, creationDate)
 
                         newsList.add(news)
                     }
+                    var itemsProcessed = 0
+                    newsList.forEach{news ->
+                        usersInFB.orderByChild("id").equalTo(news.authorId).addListenerForSingleValueEvent(object :ValueEventListener{
+                            override fun onCancelled(error: DatabaseError) {
+                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                            }
+
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if(snapshot.value != null){
+                                    snapshot.children.forEach { child ->
+                                        @Suppress("UNCHECKED_CAST") val userMap = child.value as HashMap<String, *>
+                                        val userId = userMap["id"].toString()
+                                        val firstname = userMap["firstname"]?.toString()
+                                        val lastname = userMap["lastname"]?.toString()
+
+                                        val user = User(userId, firstname, lastname)
+
+                                        usersList.add(user)
+                                        if(++itemsProcessed == newsList.size){
+                                            newsList.sortByDescending { it.creationDate }
+                                            usersLiveData.value = usersList
+                                            newsLiveData.value = newsList
+                                            hideRefreshingIndicator()
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
+
                 }
-                newsList.sortByDescending { it.creationDate }
-                newsLiveData.value = newsList
-                hideRefreshingIndicator()
+
+
             }
 
         })
@@ -79,13 +114,13 @@ class NewsDao {
         val pushedNewsRef = newsInFB.push()
         val pushedNewsId = pushedNewsRef.key
 
-        //HERE DOWNLOAD USER OF ID authorID
-        val news = News(pushedNewsId!!, User(authorId, "F","LastName"),academyKey, title, content, creationDate.time)
+        //THIS IS OLD - dont do it -> HERE DOWNLOAD USER OF ID authorID
+        val news = News(pushedNewsId!!, authorId,academyKey, title, content, creationDate.time)
 //        news.id = pushedNewsId!!
 //        news.academyId = academyKey
         newsInFB.child(news.id).setValue(news)
     }
 
     fun getNewss() = newsLiveData as LiveData<List<News>>
-
+    fun getUsers() = usersLiveData as LiveData<List<User>>
 }
