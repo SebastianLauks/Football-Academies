@@ -71,7 +71,6 @@ class NewsDao {
 
                         newsList.add(news)
                     }
-
                     var itemsProcessed = 0
                     newsList.forEach{news ->
                         usersInFB.orderByChild("id").equalTo(news.authorId).addListenerForSingleValueEvent(object :ValueEventListener{
@@ -101,7 +100,6 @@ class NewsDao {
                             }
                         })
                     }
-
                 }else{
                     hideRefreshingIndicator()
                 }
