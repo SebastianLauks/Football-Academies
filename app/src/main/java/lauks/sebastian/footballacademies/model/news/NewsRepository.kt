@@ -9,6 +9,7 @@ class NewsRepository private constructor(private val newsDao: NewsDao){
     fun startListening(chosenAcademyId:String, hideRefreshingIndicator: () -> Unit) = newsDao.startListening(chosenAcademyId, hideRefreshingIndicator)
 
     fun getNewss() = newsDao.getNewss()
+    fun getUsers() = newsDao.getUsers()
 
     fun addNews(authorId: String, title: String, content: String, creationDate: Date){
         newsDao.addNews(authorId, title, content, creationDate)

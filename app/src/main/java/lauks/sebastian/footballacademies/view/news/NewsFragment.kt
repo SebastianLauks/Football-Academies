@@ -55,7 +55,7 @@ class NewsFragment : Fragment() {
         viewModel.startListening(chosenAcademyId, hideRefreshingIndicator)
 
 
-        news_recycler_view.adapter = NewsAdapter(viewModel.getNewss())
+        news_recycler_view.adapter = NewsAdapter(viewModel.getNewss(), viewModel.getUsers())
         val linearLayoutManager = LinearLayoutManager(activity)
 //        linearLayoutManager.reverseLayout = true
 //        linearLayoutManager.stackFromEnd = true
