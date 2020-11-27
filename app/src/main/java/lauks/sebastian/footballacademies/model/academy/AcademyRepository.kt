@@ -2,6 +2,7 @@ package lauks.sebastian.footballacademies.model.academy
 
 class AcademyRepository private constructor(private val academyDao: AcademyDao){
 
+    fun leaveAcademy(academyId: String, userId: String, refreshAcademies: () -> Unit) = academyDao.leaveAcademy(academyId, userId,refreshAcademies)
     fun addAcademy(academyName: String) {
 
         academyDao.addAcademy(academyName)

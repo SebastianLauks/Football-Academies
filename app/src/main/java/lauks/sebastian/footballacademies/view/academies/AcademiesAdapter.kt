@@ -13,7 +13,9 @@ import lauks.sebastian.footballacademies.model.academy.Academy
 import lauks.sebastian.footballacademies.view.drawer.DrawerActivity
 
 class AcademiesAdapter(
-    private val academiesList: LiveData<List<Academy>>
+    private val academiesList: LiveData<List<Academy>>,
+    private val onAcademyClick: (academyId: String) -> Unit,
+    private val onAcademyLongClick: (academyId: String) -> Unit
 ): RecyclerView.Adapter<AcademiesAdapter.AcademiesViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AcademiesViewHolder {
         val itemView =LayoutInflater.from(parent.context).inflate(R.layout.academy_item, parent, false)
@@ -21,10 +23,14 @@ class AcademiesAdapter(
 
         //HERE e.g. holder.itemView.setOnClickListener{....
         holder.itemView.setOnClickListener {
-            val context = it.context
-            val intent = Intent(context, DrawerActivity::class.java)
-            intent.putExtra("chosenAcademyId", academiesList.value!![holder.adapterPosition].id)
-            context.startActivity(intent)
+            onAcademyClick(academiesList.value!![holder.adapterPosition].id)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            onAcademyLongClick(academiesList.value!![holder.adapterPosition].id)
+
+            false
+
         }
 
         return holder

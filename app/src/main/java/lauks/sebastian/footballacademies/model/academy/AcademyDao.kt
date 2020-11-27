@@ -1,5 +1,6 @@
 package lauks.sebastian.footballacademies.model.academy
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
@@ -115,6 +116,25 @@ class AcademyDao {
                     }
                 }
 
+            })
+    }
+
+    fun leaveAcademy(academyId: String, userId: String, refreshAcademies: () -> Unit) {
+        academiesInFB.child(academyId).child("players").orderByValue().equalTo(userId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value != null) {
+                        snapshot.children.forEach { child ->
+                            academiesInFB.child(academyId).child("players").child(child.key!!)
+                                .removeValue()
+                            refreshAcademies()
+                        }
+                    }
+                }
             })
     }
 
