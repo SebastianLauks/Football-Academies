@@ -110,8 +110,6 @@ class NewsFragment : Fragment() {
         } else {
             Toast.makeText(context, "Nie można usuwać cudzych postów", Toast.LENGTH_SHORT).show()
         }
-
-
     }
 
     private fun refreshNews(){

@@ -260,6 +260,10 @@ class EventsDao {
         eventsInFB.child(event.id).setValue(event)
     }
 
+    fun removeEvent(eventId: String){
+        eventsInFB.child(eventId).removeValue()
+    }
+
     fun getEvents() = eventsLiveData as LiveData<List<Event>>
 
 }

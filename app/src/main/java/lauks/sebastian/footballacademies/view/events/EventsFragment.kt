@@ -15,9 +15,9 @@ import kotlinx.android.synthetic.main.fragment_events.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
 import lauks.sebastian.footballacademies.viewmodel.events.EventsViewModel
-import kotlin.math.log
-import androidx.core.os.HandlerCompat.postDelayed
-import android.os.Handler
+import android.widget.Toast
+import lauks.sebastian.footballacademies.model.events.Event
+import lauks.sebastian.footballacademies.utilities.CustomDialogGenerator
 
 
 class EventsFragment : Fragment() {
@@ -65,7 +65,7 @@ class EventsFragment : Fragment() {
 
         refreshListOfEvents()
 
-        events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), viewModel)
+        events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), onChangePresence, onEventLongClick)
         val linearLayoutManager = LinearLayoutManager(activity)
 //        linearLayoutManager.reverseLayout = true
 //        linearLayoutManager.stackFromEnd = true
@@ -93,6 +93,32 @@ class EventsFragment : Fragment() {
         fab.setOnClickListener {
             val intent = Intent(context, CreateEventActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private val onChangePresence = { eventId:String, presence: Boolean ->
+        viewModel.changePresence(eventId, presence)
+
+    }
+
+    private val onEventLongClick = { id: String ->
+
+        val event: Event? = viewModel.getEvents().value!!.find { event ->
+            event.id == id
+        }
+        if (event != null && event.authorId == loggedUserId) {
+            CustomDialogGenerator.createCustomDialog(
+                context!!,
+                "Czy chcesz usunąć wybrane wydarzenie?",
+                "Tak",
+                "Nie"
+            ) {
+                viewModel.removeEvent(event.id)
+                Toast.makeText(context, "Wydarzenie zostało usunięte", Toast.LENGTH_SHORT).show()
+                refreshListOfEvents()
+            }
+        } else {
+            Toast.makeText(context, "Nie można usuwać cudzych wydarzeń", Toast.LENGTH_SHORT).show()
         }
     }
 

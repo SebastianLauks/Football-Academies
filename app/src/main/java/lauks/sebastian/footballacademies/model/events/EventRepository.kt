@@ -3,6 +3,7 @@ package lauks.sebastian.footballacademies.model.events
 class EventRepository private constructor(private val eventsDao: EventsDao) {
 
 
+    fun removeEvent(eventId: String) = eventsDao.removeEvent(eventId)
     fun changePresence(eventId: String, presence: Boolean) = eventsDao.changePresence(eventId,presence)
     fun getEvents() = eventsDao.getEvents()
     fun getUserEventsFilters(updateEventsFiltersCheckboxes: (Boolean, Boolean, Boolean) -> Unit) = eventsDao.getUserEventsFilters(updateEventsFiltersCheckboxes)
