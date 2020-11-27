@@ -14,4 +14,5 @@ class NewsViewModel(private val newsRepository: NewsRepository): ViewModel() {
     fun addNews(authorId: String, title: String, content: String, creationDate: Date){
         newsRepository.addNews(authorId, title, content, creationDate)
     }
+    fun removeNews(newsId: String) = newsRepository.removeNews(newsId)
 }

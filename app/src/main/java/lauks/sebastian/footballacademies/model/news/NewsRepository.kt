@@ -14,6 +14,7 @@ class NewsRepository private constructor(private val newsDao: NewsDao){
     fun addNews(authorId: String, title: String, content: String, creationDate: Date){
         newsDao.addNews(authorId, title, content, creationDate)
     }
+    fun removeNews(newsId: String) = newsDao.removeNews(newsId)
 
     companion object{
         // Singleton instantiation you already know and love

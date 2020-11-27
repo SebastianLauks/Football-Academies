@@ -49,8 +49,10 @@ class NewsDao {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                newsList.clear()
+                usersList.clear()
                 if(snapshot.value != null){
-
+                    Log.d("TAGGGG", snapshot.toString())
                     snapshot.children.forEach { child ->
                         @Suppress("UNCHECKED_CAST") val newsMap = child.value as HashMap<String, *>
                         val id = newsMap["id"].toString()
@@ -109,6 +111,11 @@ class NewsDao {
 
         })
 
+    }
+
+
+    fun removeNews(newsId: String){
+        newsInFB.child(newsId).removeValue()
     }
 
     fun addNews(authorId: String, title: String, content: String, creationDate: Date){
