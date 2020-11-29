@@ -163,7 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/ll_squad_col_one"
-                    android:layout_marginStart="80dp"
+                    android:layout_marginStart="100dp"
                     android:gravity="start"
                     android:orientation="vertical">
 

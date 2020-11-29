@@ -88,7 +88,7 @@ class NewsFragment : Fragment() {
     }
 
     private val hideRefreshingIndicator = {
-        news_swipe_refresh_layout.isRefreshing = false
+        news_swipe_refresh_layout?.isRefreshing = false
     }
 
     private val onNewsLongClick = { id: String ->
