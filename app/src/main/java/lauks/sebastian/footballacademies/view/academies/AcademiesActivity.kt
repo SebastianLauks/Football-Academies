@@ -66,7 +66,7 @@ class AcademiesActivity : AppCompatActivity() {
 
         academies_recycler_view.adapter =
             AcademiesAdapter(viewModel.getAcademies(), onAcademyClick, onAcademyLongClick)
-        academies_recycler_view.layoutManager = GridLayoutManager(this, 2)
+        academies_recycler_view.layoutManager = GridLayoutManager(this, resources.getInteger(R.integer.academies_column_count))
         academies_recycler_view.setHasFixedSize(true)
         viewModel.getAcademies().observe(this, Observer { _ ->
             (academies_recycler_view.adapter as AcademiesAdapter).notifyDataSetChanged()

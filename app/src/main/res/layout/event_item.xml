@@ -44,12 +44,14 @@
                     android:id="@+id/tv_event_timestamp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:text="12/12/2020 17:30" />
 
                 <TextView
                     android:id="@+id/tv_event_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:text="Wrocław, ul. Nowowiejska 37" />
             </LinearLayout>
 

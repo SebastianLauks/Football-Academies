@@ -17,45 +17,9 @@
         android:padding="8dp"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
 
-            <TextView
-                android:id="@+id/tv_post_firstname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="48dp"
-                android:layout_marginEnd="4dp"
-                android:textStyle="bold"
-                android:text="Imię" />
 
-            <TextView
-                android:id="@+id/tv_post_lastname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/tv_post_firstname"
-                android:textStyle="bold"
-                android:text="Nazwisko" />
-
-            <TextView
-                android:id="@+id/tv_post_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="24dp"
-                android:text="" />
-
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_margin="8dp"
-            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/tv_post_title"
@@ -72,6 +36,44 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Content"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_margin="8dp"
+            android:background="@android:color/darker_gray" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/tv_post_firstname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="4dp"
+                android:textStyle="normal"
+                android:text="Imię" />
+
+            <TextView
+                android:id="@+id/tv_post_lastname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/tv_post_firstname"
+                android:textStyle="normal"
+                android:text="Nazwisko" />
+
+            <TextView
+                android:id="@+id/tv_post_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:text="" />
+
+
+        </RelativeLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
 

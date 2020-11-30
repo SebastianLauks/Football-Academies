@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
-    app:strokeWidth="0.5dp"
-    app:strokeColor="@color/customBlackColor"
+    android:theme="@style/ItemTheme"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
-    android:theme="@style/ItemTheme">
+    app:strokeColor="@color/customBlackColor"
+    app:strokeWidth="0.5dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,26 +20,25 @@
 
 
         <androidx.cardview.widget.CardView
-            android:layout_marginStart="8dp"
+            android:id="@+id/cv_image_circle"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:elevation="12dp"
-            android:id="@+id/cv_image_circle"
-            app:cardCornerRadius="40dp"
             android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:elevation="12dp"
             android:innerRadius="0dp"
             android:shape="ring"
-            android:thicknessRatio="1.9">
+            android:thicknessRatio="1.9"
+            app:cardCornerRadius="40dp">
+
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/avatar_default"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:src="@drawable/avatar_default" />
         </androidx.cardview.widget.CardView>
-
-
 
 
         <LinearLayout
@@ -122,16 +122,16 @@
                             android:id="@+id/tv_squad_height_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="160" />
+                            android:text="160"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_squad_height_unit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
-                            android:textStyle="bold"
-                            android:text="cm" />
+                            android:text="cm"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
 
@@ -144,16 +144,16 @@
                             android:id="@+id/tv_squad_weight_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="50" />
+                            android:text="50"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_squad_weight_unit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
-                            android:textStyle="bold"
-                            android:text="kg" />
+                            android:text="kg"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -162,8 +162,8 @@
                     android:id="@+id/ll_squad_col_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/ll_squad_col_one"
                     android:layout_marginStart="100dp"
+                    android:layout_toEndOf="@id/ll_squad_col_one"
                     android:gravity="start"
                     android:orientation="vertical">
 
@@ -185,8 +185,8 @@
                     android:id="@+id/ll_squad_col_four"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/ll_squad_col_three"
                     android:layout_marginStart="4dp"
+                    android:layout_toEndOf="@id/ll_squad_col_three"
                     android:gravity="start"
                     android:orientation="vertical">
 
@@ -200,16 +200,16 @@
                             android:id="@+id/tv_squad_age_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="12" />
+                            android:text="12"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_squad_age_unit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
-                            android:textStyle="bold"
-                            android:text="" />
+                            android:text=""
+                            android:textStyle="bold" />
                     </LinearLayout>
 
 
@@ -222,16 +222,16 @@
                             android:id="@+id/tv_squad_pref_foot_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="lewa" />
+                            android:text="lewa"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_squad_pref_foot_unit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
-                            android:textStyle="bold"
-                            android:text="" />
+                            android:text=""
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                 </LinearLayout>
