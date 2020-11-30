@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".view.events.EventDetailsActivity"></activity>
         <activity
             android:name=".view.profile.EditProfileActivity"
             android:label="Profil" />
@@ -36,7 +37,8 @@
         <activity
             android:name=".view.drawer.DrawerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.academies.AcademiesActivity"
+        <activity
+            android:name=".view.academies.AcademiesActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

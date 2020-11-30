@@ -65,7 +65,7 @@ class EventsFragment : Fragment() {
 
         refreshListOfEvents()
 
-        events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), onChangePresence, onEventLongClick)
+        events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), onChangePresence, onEventLongClick, onEventClick)
         val linearLayoutManager = LinearLayoutManager(activity)
 //        linearLayoutManager.reverseLayout = true
 //        linearLayoutManager.stackFromEnd = true
@@ -99,6 +99,12 @@ class EventsFragment : Fragment() {
     private val onChangePresence = { eventId:String, presence: Boolean ->
         viewModel.changePresence(eventId, presence)
 
+    }
+
+    private val onEventClick ={ event: Event ->
+        val intent = Intent(context, EventDetailsActivity::class.java)
+        intent.putExtra("event", event)
+        startActivity(intent)
     }
 
     private val onEventLongClick = { id: String ->

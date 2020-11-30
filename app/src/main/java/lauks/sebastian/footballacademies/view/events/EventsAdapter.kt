@@ -15,7 +15,8 @@ import java.util.*
 class EventsAdapter(
     private val eventsList: LiveData<List<Event>>,
     private val onChangePresence: (eventId: String, presence: Boolean) -> Unit,
-    private val onEventLongClick: (eventId: String) -> Unit
+    private val onEventLongClick: (eventId: String) -> Unit,
+    private val onEventClick: (event: Event) -> Unit
 ) : RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val itemView =
@@ -30,6 +31,10 @@ class EventsAdapter(
         holder.itemView.setOnLongClickListener {
             onEventLongClick(eventsList.value!![holder.adapterPosition].id)
             false
+        }
+
+        holder.itemView.setOnClickListener {
+            onEventClick(eventsList.value!![holder.adapterPosition])
         }
 
         return holder

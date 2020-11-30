@@ -8,6 +8,7 @@ import com.google.android.gms.common.util.Strings
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import lauks.sebastian.footballacademies.model.Player
 import lauks.sebastian.footballacademies.model.User
 import java.util.*
 import kotlin.collections.HashMap
@@ -16,10 +17,16 @@ class EventsDao {
 
     private lateinit var eventsInFB: DatabaseReference
     private lateinit var usersInFB: DatabaseReference
+    private lateinit var academiesInFB: DatabaseReference
     private lateinit var academyKey: String
     private lateinit var loggedUserId: String
     private val eventsList = mutableListOf<Event>()
     private val eventsLiveData = MutableLiveData<List<Event>>()
+
+    private val confirmedUsersList = mutableListOf<Player>()
+    private val confirmedUsersLiveData = MutableLiveData<List<Player>>()
+    private val allUsers = mutableListOf<Player>()
+    private val allUsersLiveData = MutableLiveData<List<Player>>()
 
     private var matches: Boolean = true
     private var tournaments: Boolean = true
@@ -30,6 +37,8 @@ class EventsDao {
 //            )
 //        eventsList.add(event1)
         eventsLiveData.value = eventsList
+        allUsersLiveData.value = allUsers
+        confirmedUsersLiveData.value = confirmedUsersList
     }
 
     fun startListening(
@@ -131,6 +140,105 @@ class EventsDao {
 
             })
     }
+
+
+    fun fetchConfirmedParticipants(userIds: List<String>, callback: () -> Unit ){
+        usersInFB = Firebase.database.reference.child("Users")
+
+        var itemsProcessed = 0
+        confirmedUsersList.clear()
+        allUsers.clear()
+        userIds.forEach {
+            usersInFB.orderByChild("id").equalTo(it).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.value != null){
+                        snapshot.children.forEach {
+                            @Suppress("UNCHECKED_CAST") val userMap = it.value as HashMap<String, *>
+                            val id = userMap.get("id").toString()
+                            val firstname = userMap.get("firstname").toString()
+                            val lastname = userMap.get("lastname")?.toString()
+                            val height = userMap.get("height")?.toString()?.toInt()
+                            val age = userMap.get("age")?.toString()?.toInt()
+                            val weight = userMap.get("weight")?.toString()?.toInt()
+                            val prefFoot = userMap.get("prefFoot")?.toString()?.toInt()
+
+                            val player = Player(id, firstname, lastname, height, weight, age, prefFoot)
+                            confirmedUsersList.add(player)
+                            if(++itemsProcessed == userIds.size){
+                                confirmedUsersLiveData.value = confirmedUsersList
+                                callback()
+                            }
+                        }
+                    }
+                }
+            })
+
+        }
+    }
+
+    fun getAllUsers() = allUsersLiveData as LiveData<List<Player>>
+    fun getConfirmedUsers() = confirmedUsersLiveData as LiveData<List<Player>>
+
+    fun fetchAllUsers(callback: () -> Unit){
+        academiesInFB = Firebase.database.reference.child("academies")
+        academiesInFB.orderByChild("id").equalTo(academyKey)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value != null) {
+                        snapshot.children.forEach { child ->
+                            @Suppress("UNCHECKED_CAST") val academyMap = child.value as HashMap<String, *>
+                            val playersIds = getPlayersIds(academyMap["players"])
+                            playersIds.forEach { playerId ->
+                                usersInFB.orderByChild("id").equalTo(playerId).addListenerForSingleValueEvent(object: ValueEventListener{
+                                    override fun onCancelled(error: DatabaseError) {
+                                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                    }
+
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        if(snapshot.value != null){
+                                            snapshot.children.forEach { it ->
+                                                @Suppress("UNCHECKED_CAST") val userMap = it.value as HashMap<String, *>
+                                                val id = userMap.get("id").toString()
+                                                val firstname = userMap.get("firstname").toString()
+                                                val lastname = userMap.get("lastname")?.toString()
+                                                val height = userMap.get("height")?.toString()?.toInt()
+                                                val age = userMap.get("age")?.toString()?.toInt()
+                                                val weight = userMap.get("weight")?.toString()?.toInt()
+                                                val prefFoot = userMap.get("prefFoot")?.toString()?.toInt()
+
+                                                val player = Player(id, firstname, lastname, height, weight, age, prefFoot)
+                                                allUsers.add(player)
+                                            }
+                                        }
+                                        allUsersLiveData.value = allUsers
+                                        callback()
+                                    }
+                                })
+                            }
+                        }
+                    }
+                }
+            })
+    }
+    private fun getPlayersIds(players: Any?): MutableList<String> {
+        val playersList = mutableListOf<String>()
+        if (players != null) {
+            @Suppress("UNCHECKED_CAST") val playersMap = players as HashMap<String, *>
+            playersMap.forEach { (_, v) ->
+                playersList.add(v as String)
+            }
+        }
+        return playersList
+    }
+
 
     fun getUserEventsFilters(updateEventsFiltersCheckboxes: (Boolean, Boolean, Boolean) -> Unit) {
         usersInFB = Firebase.database.reference.child("Users")

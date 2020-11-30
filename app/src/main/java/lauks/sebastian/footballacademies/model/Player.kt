@@ -4,4 +4,7 @@ data class Player (val id: String, val firstname: String?, val lastname: String?
 
     //prefFoot - 0-dontKnow 1-right, 2-left, 3-both
 
+    override fun toString(): String {
+        return firstname + " " + lastname
+    }
 }

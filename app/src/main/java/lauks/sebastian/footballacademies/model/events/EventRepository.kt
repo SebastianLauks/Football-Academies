@@ -11,6 +11,11 @@ class EventRepository private constructor(private val eventsDao: EventsDao) {
     fun addEvent(authorId: String, type: String, date: Long, place: String, notes: String) =
         eventsDao.addEvent(authorId, type, date, place, notes)
     fun setUserEventsFilters(matches: Boolean, tournaments: Boolean, trainings: Boolean, finish: () -> Unit) = eventsDao.setUserEventsFilters(matches, tournaments, trainings, finish)
+    fun fetchAllUsers(callback: () -> Unit) = eventsDao.fetchAllUsers(callback)
+    fun fetchConfirmedParticipants(userIds: List<String>, callback: () -> Unit ) = eventsDao.fetchConfirmedParticipants(userIds, callback)
+    fun getAllUsers() = eventsDao.getAllUsers()
+    fun getConfirmedUsers() = eventsDao.getConfirmedUsers()
+
 
     companion object {
         @Volatile
