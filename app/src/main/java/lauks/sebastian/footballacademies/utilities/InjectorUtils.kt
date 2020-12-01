@@ -1,6 +1,5 @@
 package lauks.sebastian.footballacademies.utilities
 
-import android.provider.ContactsContract
 import lauks.sebastian.footballacademies.model.Database
 import lauks.sebastian.footballacademies.model.academy.AcademyRepository
 import lauks.sebastian.footballacademies.model.events.EventRepository
@@ -10,8 +9,7 @@ import lauks.sebastian.footballacademies.model.squad.SquadRepository
 import lauks.sebastian.footballacademies.viewmodel.academies.AcademiesViewModelFactory
 import lauks.sebastian.footballacademies.viewmodel.events.EventsViewModelFactory
 import lauks.sebastian.footballacademies.viewmodel.news.NewsViewModelFactory
-import lauks.sebastian.footballacademies.viewmodel.profile.EditProfileViewModel
-import lauks.sebastian.footballacademies.viewmodel.profile.EditProfileViewModelFactory
+import lauks.sebastian.footballacademies.viewmodel.profile.ProfileViewModelFactory
 import lauks.sebastian.footballacademies.viewmodel.squad.SquadViewModelFactory
 
 object InjectorUtils {
@@ -39,9 +37,9 @@ object InjectorUtils {
         return EventsViewModelFactory(eventRepository)
     }
 
-    fun provideEditProfileViewModelFactory(): EditProfileViewModelFactory{
+    fun provideProfileViewModelFactory(): ProfileViewModelFactory{
         val userRepository = UserRepository.getInstance(Database.getInstance().userDao)
-        return EditProfileViewModelFactory(userRepository)
+        return ProfileViewModelFactory(userRepository)
     }
 
 }

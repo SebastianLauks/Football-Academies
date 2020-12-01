@@ -7,11 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.news_item.view.*
 import lauks.sebastian.footballacademies.R
-import lauks.sebastian.footballacademies.model.User
+import lauks.sebastian.footballacademies.model.profile.User
 import lauks.sebastian.footballacademies.model.news.News
-import lauks.sebastian.footballacademies.utilities.CustomDialogGenerator
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class NewsAdapter(

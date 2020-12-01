@@ -11,8 +11,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.events.EventDetailsActivity"
-            />
+        <activity
+            android:name=".view.profile.SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.profile.SignInActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.events.EventDetailsActivity" />
         <activity
             android:name=".view.profile.EditProfileActivity"
             android:label="Profil" />
@@ -40,13 +51,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.academies.AcademiesActivity"
-            android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

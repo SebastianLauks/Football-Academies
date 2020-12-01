@@ -1,8 +1,10 @@
 package lauks.sebastian.footballacademies.view.academies
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -46,7 +48,6 @@ class AcademiesActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.mi_edit_profile -> {
                 val intent = Intent(applicationContext, EditProfileActivity::class.java)
-                val loggedUserId = "user0001" //Todo GET USER IR
                 intent.putExtra("loggedUserId", loggedUserId)
                 startActivity(intent)
                 return true
@@ -60,8 +61,10 @@ class AcademiesActivity : AppCompatActivity() {
         val factory = InjectorUtils.provideAcademiesViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(AcademiesViewModel::class.java)
 
-        loggedUserId = "user0001" //Todo GET USER IR
+        val sharedPref = getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE)
+        loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
+        Log.d("useruser: ", loggedUserId)
         refreshAcademies()
 
         academies_recycler_view.adapter =
@@ -78,6 +81,14 @@ class AcademiesActivity : AppCompatActivity() {
         }
 
         setupFabs()
+    }
+
+    override fun onBackPressed() {
+        CustomDialogGenerator.createCustomDialog(this, "Czy chcesz się wylogować?", "Tak", "Nie"){
+            val sharedPref = getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE)
+            sharedPref.edit().remove("loggedUserId").commit()
+            super.onBackPressed()
+        }
     }
 
     private fun refreshAcademies() {

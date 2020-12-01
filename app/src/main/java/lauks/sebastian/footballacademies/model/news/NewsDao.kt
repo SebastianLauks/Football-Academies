@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import lauks.sebastian.footballacademies.model.User
+import lauks.sebastian.footballacademies.model.profile.User
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -87,8 +87,15 @@ class NewsDao {
                                         val userId = userMap["id"].toString()
                                         val firstname = userMap["firstname"]?.toString()
                                         val lastname = userMap["lastname"]?.toString()
+                                        val password = userMap["password"].toString()
 
-                                        val user = User(userId, firstname, lastname)
+                                        val user =
+                                            User(
+                                                userId,
+                                                password,
+                                                firstname,
+                                                lastname
+                                            )
 
                                         usersList.add(user)
                                         if(++itemsProcessed == newsList.size){

@@ -13,7 +13,7 @@ class EventsViewModel(private val eventRepository: EventRepository):ViewModel() 
     fun getUserEventsFilters(updateEventsFiltersCheckboxes: (Boolean, Boolean, Boolean) -> Unit) = eventRepository.getUserEventsFilters(updateEventsFiltersCheckboxes)
     fun setUserEventsFilters(matches: Boolean, tournaments: Boolean, trainings: Boolean, finish: () -> Unit) = eventRepository.setUserEventsFilters(matches, tournaments, trainings, finish )
     fun fetchAllUsers(callback: () -> Unit) = eventRepository.fetchAllUsers(callback)
-    fun fetchConfirmedParticipants(userIds: List<String>, callback: () -> Unit ) = eventRepository.fetchConfirmedParticipants(userIds, callback)
+    fun fetchConfirmedParticipants(eventId: String, callback: () -> Unit ) = eventRepository.fetchConfirmedParticipants(eventId, callback)
     fun getAllUsers() = eventRepository.getAllUsers()
     fun getConfirmedUsers() = eventRepository.getConfirmedUsers()
 }

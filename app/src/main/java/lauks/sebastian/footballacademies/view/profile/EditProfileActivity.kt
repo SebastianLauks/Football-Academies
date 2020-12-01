@@ -3,26 +3,27 @@ package lauks.sebastian.footballacademies.view.profile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import android.widget.Spinner
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.model.Player
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
-import lauks.sebastian.footballacademies.viewmodel.profile.EditProfileViewModel
+import lauks.sebastian.footballacademies.viewmodel.profile.ProfileViewModel
 
 class EditProfileActivity : AppCompatActivity() {
-    private lateinit var viewModel:EditProfileViewModel
+    private lateinit var viewModel:ProfileViewModel
     private lateinit var loggedUserId: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        val factory = InjectorUtils.provideEditProfileViewModelFactory()
-        viewModel = ViewModelProvider(this, factory).get(EditProfileViewModel::class.java)
+        val factory = InjectorUtils.provideProfileViewModelFactory()
+        viewModel = ViewModelProvider(this, factory).get(ProfileViewModel::class.java)
 
         loggedUserId = intent.getStringExtra("loggedUserId")!!
         setupSpinner()

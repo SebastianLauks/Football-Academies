@@ -7,6 +7,9 @@ class UserRepository private constructor(private val userDao: UserDao){
     fun fetchUser(userId: String, updateFields:(Player) -> Unit) = userDao.fetchUser(userId, updateFields)
     fun setUserDetails(userId: String, firstname:String?, lastname: String?, height: Int?, weight: Int?, age:Int?, prefFoot: Int?, finishSetting: () -> Unit)
     = userDao.setUserDetails(userId, firstname, lastname, height, weight, age, prefFoot, finishSetting)
+    fun checkCredentials(login: String, password:String, callback: (logged:Boolean) -> Unit) = userDao.checkCredentials(login, password, callback)
+    fun signUpUser(login: String, password: String, callback: (logged: Boolean, message: String) -> Unit) = userDao.signUpUser(login, password, callback)
+
     companion object{
         // Singleton instantiation you already know and love
         @Volatile private var instance: UserRepository? = null

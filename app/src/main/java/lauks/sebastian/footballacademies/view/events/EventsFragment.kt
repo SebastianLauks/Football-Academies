@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.view.events
 
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -57,7 +58,9 @@ class EventsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory).get(EventsViewModel::class.java)
 
         chosenAcademyId = activity!!.intent.extras!!.get("chosenAcademyId").toString()
-        loggedUserId = "user0001" //Todo take userid from shared preferences...
+        val sharedPref = activity!!.getSharedPreferences(resources.getString(R.string.app_name),
+            Context.MODE_PRIVATE)
+        loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
         hideRefreshingIndicator = {
             swipe_refresh_layout.isRefreshing = false
@@ -98,7 +101,6 @@ class EventsFragment : Fragment() {
 
     private val onChangePresence = { eventId:String, presence: Boolean ->
         viewModel.changePresence(eventId, presence)
-
     }
 
     private val onEventClick ={ event: Event ->

@@ -1,5 +1,6 @@
 package lauks.sebastian.footballacademies.view.events
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -44,7 +45,9 @@ class EventDetailsActivity : AppCompatActivity() {
         confirmedUsers = viewModel.getConfirmedUsers()
         usersToDisplay.value = confirmedUsers.value
 
-        loggedUserId = "user0001" // Todo user id
+        val sharedPref = getSharedPreferences(resources.getString(R.string.app_name),
+            Context.MODE_PRIVATE)
+        loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -140,7 +143,7 @@ class EventDetailsActivity : AppCompatActivity() {
 
     private fun refreshLayout() {
         swipe_refresh_layout.isRefreshing = true
-        viewModel.fetchConfirmedParticipants(event.confirmedParticipants) {
+        viewModel.fetchConfirmedParticipants(event.id) {
             viewModel.fetchAllUsers {
                 allUsers = viewModel.getAllUsers()
                 confirmedUsers = viewModel.getConfirmedUsers()

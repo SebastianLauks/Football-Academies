@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.view.news
 
 import android.app.ActionBar
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -13,6 +14,7 @@ import java.util.*
 
 class CreateNewsActivity : AppCompatActivity() {
     private lateinit var viewModel: NewsViewModel
+    private lateinit var loggedUserId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +24,8 @@ class CreateNewsActivity : AppCompatActivity() {
 
         val factory = InjectorUtils.provideNewsViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(NewsViewModel::class.java)
-
+        val sharedPref = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+        loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
         bt_news_cancel.setOnClickListener {
             finish()
@@ -33,7 +36,6 @@ class CreateNewsActivity : AppCompatActivity() {
                 et_news_title.text.isEmpty() -> Toast.makeText(applicationContext, R.string.create_post_empty_title,Toast.LENGTH_SHORT).show()
                 et_news_content.text.isEmpty() -> Toast.makeText(applicationContext, R.string.create_post_empty_content,Toast.LENGTH_SHORT).show()
                 else -> {
-                    val loggedUserId = "user0001" // ToDo HERE FROM SHARE PREF
                     viewModel.addNews(loggedUserId, et_news_title.text.toString(), et_news_content.text.toString(), Date())
 
                     et_news_content.setText("")

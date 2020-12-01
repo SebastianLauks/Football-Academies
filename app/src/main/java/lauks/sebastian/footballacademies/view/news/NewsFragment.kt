@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.view.news
 
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -52,7 +53,9 @@ class NewsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory).get(NewsViewModel::class.java)
 
         chosenAcademyId = activity!!.intent.extras!!.get("chosenAcademyId").toString()
-        loggedUserId = "user0001" // ToDo get USER ID
+        val sharedPref = activity!!.getSharedPreferences(resources.getString(R.string.app_name),
+            Context.MODE_PRIVATE)
+        loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
         refreshNews()
 

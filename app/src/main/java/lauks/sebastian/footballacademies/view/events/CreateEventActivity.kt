@@ -3,6 +3,7 @@ package lauks.sebastian.footballacademies.view.events
 import android.app.ActionBar
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +23,7 @@ class CreateEventActivity : AppCompatActivity() {
 
     val cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"))
     private lateinit var viewModel: EventsViewModel
+    private lateinit var loggedUserId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +32,8 @@ class CreateEventActivity : AppCompatActivity() {
         val factory = InjectorUtils.provideEventsViewModelFactory()
         viewModel = ViewModelProvider(this, factory).get(EventsViewModel::class.java)
 
-
+        val sharedPref = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+        loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
         bt_event_cancel.setOnClickListener {
             finish()
@@ -58,7 +61,6 @@ class CreateEventActivity : AppCompatActivity() {
                     toast.show()
                 }
                 else -> {
-                    val loggedUserId = "user0001" // ToDo HERE FROM SHARE PREF
                     Log.d("dataaa", et_events_time.text.toString())
                     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
                     viewModel.addEvent(

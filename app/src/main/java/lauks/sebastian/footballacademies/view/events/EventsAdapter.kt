@@ -1,5 +1,6 @@
 package lauks.sebastian.footballacademies.view.events
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,9 @@ class EventsAdapter(
     private val onEventLongClick: (eventId: String) -> Unit,
     private val onEventClick: (event: Event) -> Unit
 ) : RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
+
+    private lateinit var loggedUserId: String
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.event_item, parent, false)
@@ -30,12 +34,16 @@ class EventsAdapter(
 
         holder.itemView.setOnLongClickListener {
             onEventLongClick(eventsList.value!![holder.adapterPosition].id)
-            false
+            true
         }
 
         holder.itemView.setOnClickListener {
             onEventClick(eventsList.value!![holder.adapterPosition])
         }
+
+        val sharedPref = parent.context.getSharedPreferences(parent.context.resources.getString(R.string.app_name),
+            Context.MODE_PRIVATE)
+        loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
         return holder
 
@@ -53,8 +61,8 @@ class EventsAdapter(
         //This is written 01.11.20 at 23:31. Take it into account
 
         //holder.switchButton ????
-        val loggedUser = "user0001"
-        holder.switchButton.isChecked = eventsList.value!![position].confirmedParticipants.contains(loggedUser)
+
+        holder.switchButton.isChecked = eventsList.value!![position].confirmedParticipants.contains(loggedUserId)
 
         holder.tvType.text = currentItem.type
         holder.tvPlace.text = currentItem.place

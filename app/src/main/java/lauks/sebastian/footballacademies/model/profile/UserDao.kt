@@ -7,6 +7,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import lauks.sebastian.footballacademies.model.Player
+import kotlin.math.log
 
 class UserDao {
     private lateinit var usersInFB: DatabaseReference
@@ -70,7 +71,52 @@ class UserDao {
 
             }
         })
+    }
 
+    fun checkCredentials(login: String, password:String, callback: (logged:Boolean) -> Unit){
+        usersInFB = Firebase.database.reference.child("Users")
 
+        usersInFB.orderByChild("id").equalTo(login).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.value != null){
+                    snapshot.children.forEach { child ->
+                        @Suppress("UNCHECKED_CAST") val userMap = child.value as HashMap<String, *>
+                        val passwordDB = userMap["password"]?.toString()
+                        if(password == passwordDB){
+                            callback(true)
+                        }else{
+                            callback(false)
+                        }
+                    }
+                }else{
+                    callback(false)
+                }
+            }
+        })
+    }
+
+    fun signUpUser(login: String, password: String, callback: (logged: Boolean, message: String) -> Unit){
+        usersInFB = Firebase.database.reference.child("Users")
+
+        usersInFB.orderByChild("id").equalTo(login).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.value != null){
+                    callback(false, "Podana nazwa użytkownika jest zajęta.")
+                }else{
+                    val user = User(login, password, null, null)
+                    val pushedRef = usersInFB.push()
+                    usersInFB.child(pushedRef.key!!).setValue(user)
+                    callback(true, "")
+                }
+            }
+        })
     }
 }

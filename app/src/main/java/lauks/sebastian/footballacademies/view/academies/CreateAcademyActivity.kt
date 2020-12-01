@@ -34,7 +34,6 @@ class CreateAcademyActivity : AppCompatActivity() {
             when{
                 et_academies_name.text.isEmpty() -> Toast.makeText(applicationContext, R.string.create_academy_empty_name,Toast.LENGTH_SHORT).show()
                 else -> {
-                    val loggedUserId = "user0001" // ToDo HERE FROM SHARE PREF
                     viewModel.addAcademy(et_academies_name.text.toString())
                     et_academies_name.setText("")
                     Toast.makeText(applicationContext, R.string.create_academy_added,Toast.LENGTH_SHORT).show()

@@ -38,7 +38,6 @@ class JoinAcademyActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 else -> {
-                    val loggedUserId = "user0001" // ToDo HERE FROM SHARE PREF
                     viewModel.addToSquad(et_join_academies_code.text.toString())
                     et_join_academies_code.setText("")
                     Toast.makeText(
