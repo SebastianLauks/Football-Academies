@@ -44,6 +44,11 @@ class AcademiesActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onResume() {
+        super.onResume()
+        refreshAcademies()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.mi_edit_profile -> {
@@ -64,7 +69,6 @@ class AcademiesActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE)
         loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
-        Log.d("useruser: ", loggedUserId)
         refreshAcademies()
 
         academies_recycler_view.adapter =
@@ -122,6 +126,7 @@ class AcademiesActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 
     fun showFABMenu() {
         isFABOpen = true

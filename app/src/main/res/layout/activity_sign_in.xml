@@ -23,6 +23,12 @@
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
+<LinearLayout
+    android:id="@+id/layout_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
 
     <ImageView
         android:layout_margin="4dp"
@@ -87,5 +93,5 @@
             android:text="Rejestracja"
             />
     </LinearLayout>
-
+</LinearLayout>
 </LinearLayout>

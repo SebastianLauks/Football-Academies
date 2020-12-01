@@ -38,17 +38,29 @@ class JoinAcademyActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 else -> {
-                    viewModel.addToSquad(et_join_academies_code.text.toString())
-                    et_join_academies_code.setText("")
-                    Toast.makeText(
-                        applicationContext,
-                        R.string.join_academy_joined,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
+                    viewModel.addToSquad(et_join_academies_code.text.toString(), joinAcademyCallback)
+
                 }
 
             }
+        }
+    }
+
+    private val joinAcademyCallback = {joined: Boolean ->
+        if(joined){
+            et_join_academies_code.setText("")
+            Toast.makeText(
+                applicationContext,
+                R.string.join_academy_joined,
+                Toast.LENGTH_SHORT
+            ).show()
+            finish()
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "Nie znaleziono akademii o podanym kodzie",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

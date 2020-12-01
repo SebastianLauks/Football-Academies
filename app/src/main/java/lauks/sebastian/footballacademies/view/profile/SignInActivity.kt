@@ -63,12 +63,17 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun checkIfUsersIsAlreadyLogged(){
+        layout_content.visibility = View.GONE
+        loadingIndicator.visibility = View.VISIBLE
         val sharedPref = getSharedPreferences( resources.getString(R.string.app_name),Context.MODE_PRIVATE)
         val userId = sharedPref.getString("loggedUserId", "unknown").toString()
         if(userId !="unknown" ){
             val intent = Intent(this, AcademiesActivity::class.java)
             startActivity(intent)
             Toast.makeText(this, "Zalogowano jako $userId", Toast.LENGTH_SHORT).show()
+        }else{
+            layout_content.visibility = View.VISIBLE
+            loadingIndicator.visibility = View.GONE
         }
     }
 

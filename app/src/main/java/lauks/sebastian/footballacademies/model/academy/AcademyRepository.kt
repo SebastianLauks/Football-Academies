@@ -3,12 +3,10 @@ package lauks.sebastian.footballacademies.model.academy
 class AcademyRepository private constructor(private val academyDao: AcademyDao){
 
     fun leaveAcademy(academyId: String, userId: String, refreshAcademies: () -> Unit) = academyDao.leaveAcademy(academyId, userId,refreshAcademies)
-    fun addAcademy(academyName: String) {
+    fun addAcademy(academyName: String,callback: ()-> Unit) = academyDao.addAcademy(academyName,callback)
 
-        academyDao.addAcademy(academyName)
-    }
 
-    fun addToSquad(academyCode: String) = academyDao.addToSquad(academyCode)
+    fun addToSquad(academyCode: String, joinAcademyCallback: (joined: Boolean) -> Unit) = academyDao.addToSquad(academyCode, joinAcademyCallback)
 
     fun startListening(loggedUserId: String, hideRefreshingIncdicator: () -> Unit) = academyDao.startListening(loggedUserId, hideRefreshingIncdicator)
 

@@ -33,7 +33,7 @@ class AcademyDao {
 
             override fun onDataChange(snapshot: DataSnapshot) {
 
-
+                academiesList.clear()
                 snapshot.children.forEach { academyFB: DataSnapshot ->
                     @Suppress("UNCHECKED_CAST")
                     val academyMap = academyFB.value as HashMap<String, *>
@@ -65,7 +65,7 @@ class AcademyDao {
         return playersList
     }
 
-    fun addToSquad(academyCode: String) {
+    fun addToSquad(academyCode: String, joinAcademyCallback: (joined: Boolean) -> Unit) {
         academiesInFB.orderByChild("code").equalTo(academyCode)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -85,15 +85,18 @@ class AcademyDao {
                                 academiesInFB.child(academyId).child("players")
                                     .child(newPlayerKey!!)
                                     .setValue(loggedUserId)
+                                joinAcademyCallback(true)
                             }
                         }
 
+                    }else{
+                        joinAcademyCallback(false)
                     }
                 }
             })
     }
 
-    fun addAcademy(academyName: String) {
+    fun addAcademy(academyName: String,callback: ()-> Unit) {
         academiesInFB.orderByChild("name").equalTo(academyName)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -112,7 +115,9 @@ class AcademyDao {
                             players
                         )
                         academiesInFB.child(academy.id).setValue(academy)
-                        addToSquad(academy.code)
+                        addToSquad(academy.code){
+                            callback()
+                        }
                     }
                 }
 

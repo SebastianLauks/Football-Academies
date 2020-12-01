@@ -1,5 +1,6 @@
 package lauks.sebastian.footballacademies.model.events
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
@@ -74,7 +75,7 @@ class EventsDao {
                                 "Trening" -> if (trainings) shouldAppear = true
                                 else -> shouldAppear = false
                             }
-                            if(shouldAppear) {
+                            if (shouldAppear) {
                                 val id: String = eventMap["id"].toString()
                                 val authorId: String = eventMap["authorId"].toString()
                                 val academyId: String = eventMap["academyId"].toString()
@@ -108,7 +109,12 @@ class EventsDao {
     }
 
 
-    fun setUserEventsFilters(matches: Boolean, tournaments: Boolean, trainings: Boolean, finish: () -> Unit) {
+    fun setUserEventsFilters(
+        matches: Boolean,
+        tournaments: Boolean,
+        trainings: Boolean,
+        finish: () -> Unit
+    ) {
         usersInFB = Firebase.database.reference.child("Users")
 
         usersInFB.orderByChild("id").equalTo(loggedUserId)
@@ -137,76 +143,114 @@ class EventsDao {
     }
 
 
-    fun fetchConfirmedParticipants(eventId: String, callback: () -> Unit ){
+    fun fetchConfirmedParticipants(eventId: String, callback: () -> Unit) {
         usersInFB = Firebase.database.reference.child("Users")
 
+        eventsInFB.orderByChild("id").equalTo(eventId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value != null) {
+                        snapshot.children.forEach { child ->
+                            @Suppress("UNCHECKED_CAST") val eventMap =
+                                child.value as HashMap<String, *>
+                            val eventKey = child.key.toString()
+                            val userIds =
+                                getConfirmedParticipants(eventMap["confirmedParticipants"])
+                            var itemsProcessed = 0
+                            confirmedUsersList.clear()
+                            if (userIds.isEmpty()) {
+                                confirmedUsersLiveData.value = confirmedUsersList
+                                callback()
+                            }
+                            userIds.forEach {
+                                usersInFB.orderByChild("id").equalTo(it)
+                                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onCancelled(error: DatabaseError) {
+                                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                        }
+
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            if (snapshot.value != null) {
+                                                snapshot.children.forEach {thisChild ->
+                                                    @Suppress("UNCHECKED_CAST") val userMap =
+                                                        thisChild.value as HashMap<String, *>
+                                                    val id = userMap.get("id").toString()
+                                                    val firstname =
+                                                        userMap.get("firstname").toString()
+                                                    val lastname =
+                                                        userMap.get("lastname")?.toString()
+                                                    val height =
+                                                        userMap.get("height")?.toString()?.toInt()
+                                                    val age =
+                                                        userMap.get("age")?.toString()?.toInt()
+                                                    val weight =
+                                                        userMap.get("weight")?.toString()?.toInt()
+                                                    val prefFoot =
+                                                        userMap.get("prefFoot")?.toString()?.toInt()
+
+                                                    val player = Player(
+                                                        id,
+                                                        firstname,
+                                                        lastname,
+                                                        height,
+                                                        weight,
+                                                        age,
+                                                        prefFoot
+                                                    )
+                                                    if (allUsers.size > 0 && !allUsers.any { user -> user.id == id }) {
+                                                        removeFromConfirmedParticipants(eventKey, id)
+                                                    }else {
+                                                        confirmedUsersList.add(player)
+                                                    }
+                                                    if (++itemsProcessed == userIds.size) {
+                                                        confirmedUsersLiveData.value =
+                                                            confirmedUsersList
+                                                        callback()
+                                                    }
+                                                }
+                                            } else {
+                                                confirmedUsersLiveData.value = confirmedUsersList
+                                                callback()
+                                            }
+                                        }
+                                    })
+
+                            }
+                        }
+                    }
+                }
+
+            })
 
 
-        eventsInFB.orderByChild("id").equalTo(eventId).addListenerForSingleValueEvent(object :ValueEventListener{
+    }
+
+    private fun removeFromConfirmedParticipants(eventKey: String, userId: String){
+        eventsInFB.child(eventKey).child("confirmedParticipants").orderByValue().equalTo(userId).addListenerForSingleValueEvent(object :ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.value != null) {
-                    snapshot.children.forEach { child ->
-                        @Suppress("UNCHECKED_CAST") val eventMap =
-                            child.value as HashMap<String, *>
-                            val userIds =
-                                getConfirmedParticipants(eventMap["confirmedParticipants"])
-                        var itemsProcessed = 0
-                        confirmedUsersList.clear()
-                        allUsers.clear()
-                        if(userIds.isEmpty()) {
-                            confirmedUsersLiveData.value = confirmedUsersList
-                            callback()
-                        }
-                        userIds.forEach {
-                            usersInFB.orderByChild("id").equalTo(it).addListenerForSingleValueEvent(object : ValueEventListener{
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                                }
-
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    if(snapshot.value != null){
-                                        snapshot.children.forEach {
-                                            @Suppress("UNCHECKED_CAST") val userMap = it.value as HashMap<String, *>
-                                            val id = userMap.get("id").toString()
-                                            val firstname = userMap.get("firstname").toString()
-                                            val lastname = userMap.get("lastname")?.toString()
-                                            val height = userMap.get("height")?.toString()?.toInt()
-                                            val age = userMap.get("age")?.toString()?.toInt()
-                                            val weight = userMap.get("weight")?.toString()?.toInt()
-                                            val prefFoot = userMap.get("prefFoot")?.toString()?.toInt()
-
-                                            val player = Player(id, firstname, lastname, height, weight, age, prefFoot)
-                                            confirmedUsersList.add(player)
-                                            if(++itemsProcessed == userIds.size){
-                                                confirmedUsersLiveData.value = confirmedUsersList
-                                                callback()
-                                            }
-                                        }
-                                    }else{
-                                        confirmedUsersLiveData.value = confirmedUsersList
-                                        callback()
-                                    }
-                                }
-                            })
-
-                        }
+                if (snapshot.value != null){
+                    snapshot.children.forEach { toRem ->
+                        eventsInFB.child(eventKey).child("confirmedParticipants").child(
+                            toRem.key.toString()
+                        ).removeValue()
                     }
                 }
             }
-
         })
-
-
     }
 
     fun getAllUsers() = allUsersLiveData as LiveData<List<Player>>
     fun getConfirmedUsers() = confirmedUsersLiveData as LiveData<List<Player>>
 
-    fun fetchAllUsers(callback: () -> Unit){
+    fun fetchAllUsers(callback: () -> Unit) {
         academiesInFB = Firebase.database.reference.child("academies")
         allUsers.clear()
         academiesInFB.orderByChild("id").equalTo(academyKey)
@@ -218,47 +262,69 @@ class EventsDao {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.value != null) {
                         snapshot.children.forEach { child ->
-                            @Suppress("UNCHECKED_CAST") val academyMap = child.value as HashMap<String, *>
+                            @Suppress("UNCHECKED_CAST") val academyMap =
+                                child.value as HashMap<String, *>
                             val playersIds = getPlayersIds(academyMap["players"])
-                            if(playersIds.isEmpty()){
+                            if (playersIds.isEmpty()) {
                                 allUsersLiveData.value = allUsers
                                 callback()
                             }
+                            var itemsProcessed = 0
                             playersIds.forEach { playerId ->
-                                usersInFB.orderByChild("id").equalTo(playerId).addListenerForSingleValueEvent(object: ValueEventListener{
-                                    override fun onCancelled(error: DatabaseError) {
-                                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                                    }
-
-                                    override fun onDataChange(snapshot: DataSnapshot) {
-                                        if(snapshot.value != null){
-                                            snapshot.children.forEach {
-                                                @Suppress("UNCHECKED_CAST") val userMap = it.value as HashMap<String, *>
-                                                val id = userMap.get("id").toString()
-                                                val firstname = userMap.get("firstname").toString()
-                                                val lastname = userMap.get("lastname")?.toString()
-                                                val height = userMap.get("height")?.toString()?.toInt()
-                                                val age = userMap.get("age")?.toString()?.toInt()
-                                                val weight = userMap.get("weight")?.toString()?.toInt()
-                                                val prefFoot = userMap.get("prefFoot")?.toString()?.toInt()
-
-                                                val player = Player(id, firstname, lastname, height, weight, age, prefFoot)
-                                                allUsers.add(player)
-                                            }
+                                usersInFB.orderByChild("id").equalTo(playerId)
+                                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onCancelled(error: DatabaseError) {
+                                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                                         }
-                                        allUsersLiveData.value = allUsers
-                                        callback()
-                                    }
-                                })
+
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            if (snapshot.value != null) {
+                                                snapshot.children.forEach {
+                                                    @Suppress("UNCHECKED_CAST") val userMap =
+                                                        it.value as HashMap<String, *>
+                                                    val id = userMap.get("id").toString()
+                                                    val firstname =
+                                                        userMap.get("firstname").toString()
+                                                    val lastname =
+                                                        userMap.get("lastname")?.toString()
+                                                    val height =
+                                                        userMap.get("height")?.toString()?.toInt()
+                                                    val age =
+                                                        userMap.get("age")?.toString()?.toInt()
+                                                    val weight =
+                                                        userMap.get("weight")?.toString()?.toInt()
+                                                    val prefFoot =
+                                                        userMap.get("prefFoot")?.toString()?.toInt()
+
+                                                    val player = Player(
+                                                        id,
+                                                        firstname,
+                                                        lastname,
+                                                        height,
+                                                        weight,
+                                                        age,
+                                                        prefFoot
+                                                    )
+                                                    allUsers.add(player)
+                                                    if(++itemsProcessed == playersIds.size){
+                                                        allUsersLiveData.value = allUsers
+                                                        callback()
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    })
                             }
                         }
-                    }else {
+                    } else {
                         allUsersLiveData.value = allUsers
                         callback()
                     }
                 }
             })
     }
+
     private fun getPlayersIds(players: Any?): MutableList<String> {
         val playersList = mutableListOf<String>()
         if (players != null) {
@@ -399,7 +465,7 @@ class EventsDao {
         eventsInFB.child(event.id).setValue(event)
     }
 
-    fun removeEvent(eventId: String){
+    fun removeEvent(eventId: String) {
         eventsInFB.child(eventId).removeValue()
     }
 

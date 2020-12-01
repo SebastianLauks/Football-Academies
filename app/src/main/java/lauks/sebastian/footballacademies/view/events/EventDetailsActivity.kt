@@ -43,16 +43,22 @@ class EventDetailsActivity : AppCompatActivity() {
         refreshLayout()
         allUsers = viewModel.getAllUsers()
         confirmedUsers = viewModel.getConfirmedUsers()
-        usersToDisplay.value = confirmedUsers.value
+        usersToDisplay.value = listOf()
 
-        val sharedPref = getSharedPreferences(resources.getString(R.string.app_name),
-            Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences(
+            resources.getString(R.string.app_name),
+            Context.MODE_PRIVATE
+        )
         loggedUserId = sharedPref.getString("loggedUserId", "unknown").toString()
 
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         rv_event_details.adapter = EventDetailsAdapter(usersToDisplay, onItemClick)
+        usersToDisplay.observe(this, Observer {
+            (rv_event_details.adapter as EventDetailsAdapter).notifyDataSetChanged()
+        })
+
         val linearLayoutManager = LinearLayoutManager(this)
 //        linearLayoutManager.reverseLayout = true
 //        linearLayoutManager.stackFromEnd = true
@@ -66,9 +72,7 @@ class EventDetailsActivity : AppCompatActivity() {
             refreshLayout()
         }
 
-        usersToDisplay.observe(this, Observer {
-            (rv_event_details.adapter as EventDetailsAdapter).notifyDataSetChanged()
-        })
+
 //        setupSwitchButton()
 
     }
@@ -143,8 +147,8 @@ class EventDetailsActivity : AppCompatActivity() {
 
     private fun refreshLayout() {
         swipe_refresh_layout.isRefreshing = true
-        viewModel.fetchConfirmedParticipants(event.id) {
-            viewModel.fetchAllUsers {
+        viewModel.fetchAllUsers {
+            viewModel.fetchConfirmedParticipants(event.id) {
                 allUsers = viewModel.getAllUsers()
                 confirmedUsers = viewModel.getConfirmedUsers()
                 swipe_refresh_layout.isRefreshing = false
