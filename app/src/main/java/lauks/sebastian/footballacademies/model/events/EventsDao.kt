@@ -148,6 +148,10 @@ class EventsDao {
         var itemsProcessed = 0
         confirmedUsersList.clear()
         allUsers.clear()
+        if(userIds.isEmpty()) {
+            confirmedUsersLiveData.value = confirmedUsersList
+            callback()
+        }
         userIds.forEach {
             usersInFB.orderByChild("id").equalTo(it).addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onCancelled(error: DatabaseError) {
@@ -173,6 +177,9 @@ class EventsDao {
                                 callback()
                             }
                         }
+                    }else{
+                        confirmedUsersLiveData.value = confirmedUsersList
+                        callback()
                     }
                 }
             })
@@ -185,6 +192,7 @@ class EventsDao {
 
     fun fetchAllUsers(callback: () -> Unit){
         academiesInFB = Firebase.database.reference.child("academies")
+        allUsers.clear()
         academiesInFB.orderByChild("id").equalTo(academyKey)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -196,6 +204,10 @@ class EventsDao {
                         snapshot.children.forEach { child ->
                             @Suppress("UNCHECKED_CAST") val academyMap = child.value as HashMap<String, *>
                             val playersIds = getPlayersIds(academyMap["players"])
+                            if(playersIds.isEmpty()){
+                                allUsersLiveData.value = allUsers
+                                callback()
+                            }
                             playersIds.forEach { playerId ->
                                 usersInFB.orderByChild("id").equalTo(playerId).addListenerForSingleValueEvent(object: ValueEventListener{
                                     override fun onCancelled(error: DatabaseError) {
@@ -204,7 +216,7 @@ class EventsDao {
 
                                     override fun onDataChange(snapshot: DataSnapshot) {
                                         if(snapshot.value != null){
-                                            snapshot.children.forEach { it ->
+                                            snapshot.children.forEach {
                                                 @Suppress("UNCHECKED_CAST") val userMap = it.value as HashMap<String, *>
                                                 val id = userMap.get("id").toString()
                                                 val firstname = userMap.get("firstname").toString()
@@ -224,6 +236,9 @@ class EventsDao {
                                 })
                             }
                         }
+                    }else {
+                        allUsersLiveData.value = allUsers
+                        callback()
                     }
                 }
             })

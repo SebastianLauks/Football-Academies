@@ -7,43 +7,105 @@
     android:orientation="vertical"
     tools:context=".view.events.EventDetailsActivity">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginEnd="12dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_event_details_timestamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="12/12/2020 17:30" />
-
-        <TextView
-            android:id="@+id/tv_event_details_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="Wrocław, ul. Nowowiejska 37" />
-    </LinearLayout>
-
-    <View
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_margin="8dp"
-        android:background="@android:color/darker_gray" />
-
-    <TextView
-        android:id="@+id/tv_event_details_content"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Content" />
+        android:layout_marginTop="4dp"
+        app:strokeWidth="0.5dp"
+        app:strokeColor="@color/customBlackColor"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        android:theme="@style/ItemTheme">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/tv_event_details_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:text="Typ"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_event_details_timestamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="12/12/2020 17:30" />
+
+                    <TextView
+                        android:id="@+id/tv_event_details_place"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="Wrocław, ul. Nowowiejska 37" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_margin="8dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tv_event_details_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Content"/>
+
+<!--            <RelativeLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_toStartOf="@+id/switch_event_details"-->
+<!--                    android:text="Obecność"/>-->
+
+<!--                <Switch-->
+<!--                    android:id="@+id/switch_event_details"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="4dp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    />-->
+<!--            </RelativeLayout>-->
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
     <Spinner
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:id="@+id/spinner_event_details"
+        android:textSize="28sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -53,6 +115,8 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_margin="8dp"
+            android:padding="8dp"
             android:id="@+id/rv_event_details"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.events.EventDetailsActivity"></activity>
+        <activity android:name=".view.events.EventDetailsActivity"
+            />
         <activity
             android:name=".view.profile.EditProfileActivity"
             android:label="Profil" />

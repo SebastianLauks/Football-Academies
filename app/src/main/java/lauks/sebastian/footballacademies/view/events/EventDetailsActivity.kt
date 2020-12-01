@@ -29,6 +29,7 @@ class EventDetailsActivity : AppCompatActivity() {
     private lateinit var confirmedUsers: LiveData<List<Player>>
     private var usersToDisplay = MutableLiveData<List<Player>>()
     private lateinit var spinner: Spinner
+    private lateinit var loggedUserId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,11 @@ class EventDetailsActivity : AppCompatActivity() {
         allUsers = viewModel.getAllUsers()
         confirmedUsers = viewModel.getConfirmedUsers()
         usersToDisplay.value = confirmedUsers.value
+
+        loggedUserId = "user0001" // Todo user id
+
+        supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         rv_event_details.adapter = EventDetailsAdapter(usersToDisplay, onItemClick)
         val linearLayoutManager = LinearLayoutManager(this)
@@ -60,16 +66,31 @@ class EventDetailsActivity : AppCompatActivity() {
         usersToDisplay.observe(this, Observer {
             (rv_event_details.adapter as EventDetailsAdapter).notifyDataSetChanged()
         })
+//        setupSwitchButton()
 
     }
 
+//    private fun setupSwitchButton() {
+//        switch_event_details.isChecked =
+//            confirmedUsers.value!!.any { player -> player.id == loggedUserId }
+//        switch_event_details.setOnCheckedChangeListener { buttonView, isChecked ->
+//            viewModel.changePresence(event.id, isChecked)
+//            refreshLayout()
+//        }
+//    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
     private fun setupItemsViews() {
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
         tv_event_details_timestamp.text = formatter.format(Date(event.date))
         tv_event_details_place.text = event.place
         tv_event_details_content.text = event.notes
-        supportActionBar!!.title = event.type
+//        supportActionBar!!.title = event.type
+        tv_event_details_type.text = event.type
     }
 
     private fun setupSpinner() {
@@ -105,8 +126,8 @@ class EventDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUsersToDisplay(){
-        when(spinner.selectedItemPosition){
+    private fun setUsersToDisplay() {
+        when (spinner.selectedItemPosition) {
             0 -> {
                 usersToDisplay.value = confirmedUsers.value
             }
@@ -116,10 +137,13 @@ class EventDetailsActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun refreshLayout() {
         swipe_refresh_layout.isRefreshing = true
         viewModel.fetchConfirmedParticipants(event.confirmedParticipants) {
             viewModel.fetchAllUsers {
+                allUsers = viewModel.getAllUsers()
+                confirmedUsers = viewModel.getConfirmedUsers()
                 swipe_refresh_layout.isRefreshing = false
                 setUsersToDisplay()
             }
