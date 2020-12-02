@@ -11,8 +11,8 @@ class NewsRepository private constructor(private val newsDao: NewsDao){
     fun getNewss() = newsDao.getNewss()
     fun getUsers() = newsDao.getUsers()
 
-    fun addNews(authorId: String, title: String, content: String, creationDate: Date, imageName: String?, imageUrl:String?){
-        newsDao.addNews(authorId, title, content, creationDate, imageName, imageUrl)
+    fun addNews(authorId: String, title: String, content: String, creationDate: Date, imageName: String?, imageUrl:String?, videoName: String?, videoUrl:String?){
+        newsDao.addNews(authorId, title, content, creationDate, imageName, imageUrl, videoName, videoUrl)
     }
     fun removeNews(newsId: String, callback: () -> Unit) = newsDao.removeNews(newsId, callback)
 

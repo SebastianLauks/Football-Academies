@@ -1,5 +1,6 @@
 package lauks.sebastian.footballacademies.model
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -9,6 +10,20 @@ import com.google.firebase.storage.ktx.storage
 class StorageDao private constructor(){
 
     private val storageRef: StorageReference = FirebaseStorage.getInstance().reference
+
+
+    fun uploadVideo(name: String, uri: Uri,progressCallback: (progress: Double) -> Unit, callback: (success: Boolean, name:String, fileUrl: String) -> Unit){
+        storageRef.child("videos/$name").putFile(uri).addOnSuccessListener {task ->
+            storageRef.child("videos/$name").downloadUrl.addOnCompleteListener {
+                if(it.isSuccessful){
+                    callback(true, task.metadata!!.name.toString(), it.result.toString())
+                }
+            }
+        }.addOnProgressListener {task ->
+             val progress = 100 * (task.bytesTransferred.toDouble() / task.totalByteCount.toDouble())
+            progressCallback(progress)
+        }
+    }
 
     fun uploadImage(name: String, data: ByteArray?, callback: (success:Boolean, name: String, fileUrl: String) -> Unit){
 
@@ -36,6 +51,24 @@ class StorageDao private constructor(){
         }.addOnFailureListener {
             callback(false)
         }
+    }
+
+    fun removeVideo(name:String, callback: (success: Boolean) -> Unit){
+        storageRef.child("videos/$name").delete().addOnSuccessListener {
+            callback(true)
+        }.addOnFailureListener {
+            callback(false)
+        }
+    }
+
+    fun downloadVideo(name: String, callback: (success: Boolean, data: ByteArray?) -> Unit){
+        val MAX_SIZE: Long = 1024 * 1024 * 100
+        storageRef.child("videos/$name").getBytes(MAX_SIZE).addOnSuccessListener {
+            callback(true, it)
+        }.addOnFailureListener {
+            callback(false, null)
+        }
+
     }
 
     fun downloadImage(name: String, callback: (success: Boolean, data: ByteArray?) -> Unit){

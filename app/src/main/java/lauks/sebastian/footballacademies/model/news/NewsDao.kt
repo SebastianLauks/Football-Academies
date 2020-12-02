@@ -69,8 +69,10 @@ class NewsDao {
                         val content = newsMap["content"].toString()
                         val imageName = newsMap["imageName"]?.toString()
                         val imageUrl = newsMap["imageUrl"]?.toString()
+                        val videoName = newsMap["videoName"]?.toString()
+                        val videoUrl = newsMap["videoUrl"]?.toString()
 
-                        val news = News(id, authorId, academyId, title, content, creationDate,imageName, imageUrl)
+                        val news = News(id, authorId, academyId, title, content, creationDate,imageName, imageUrl,videoName,videoUrl)
 
                         newsList.add(news)
                     }
@@ -127,12 +129,12 @@ class NewsDao {
         callback()
     }
 
-    fun addNews(authorId: String, title: String, content: String, creationDate: Date, imageName: String?, imageUrl:String?){
+    fun addNews(authorId: String, title: String, content: String, creationDate: Date, imageName: String?, imageUrl:String?, videoName: String?, videoUrl:String?){
         val pushedNewsRef = newsInFB.push()
         val pushedNewsId = pushedNewsRef.key
 
         //THIS IS OLD - dont do it -> HERE DOWNLOAD USER OF ID authorID
-        val news = News(pushedNewsId!!, authorId,academyKey, title, content, creationDate.time, imageName, imageUrl)
+        val news = News(pushedNewsId!!, authorId,academyKey, title, content, creationDate.time, imageName, imageUrl, videoName, videoUrl)
 //        news.id = pushedNewsId!!
 //        news.academyId = academyKey
         newsInFB.child(news.id).setValue(news)

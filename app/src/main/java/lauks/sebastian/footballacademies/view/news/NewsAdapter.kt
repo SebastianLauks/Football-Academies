@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
 import androidx.core.os.persistableBundleOf
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,8 @@ import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.model.profile.User
 import lauks.sebastian.footballacademies.model.news.News
 import lauks.sebastian.footballacademies.viewmodel.news.NewsViewModel
+import java.io.ByteArrayInputStream
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,7 +28,8 @@ class NewsAdapter(
     private val newsList: LiveData<List<News>>,
     private val usersList: LiveData<List<User>>,
     private val onPostLongClick: (name: String) -> Unit,
-    private val scrollToPosition: (position: Int) -> Unit
+    private val scrollToPosition: (position: Int) -> Unit,
+    private val viewModel: NewsViewModel
 ) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     private lateinit var context: Context
@@ -43,7 +47,7 @@ class NewsAdapter(
 //                onPostLongClick.invoke(newsList.value!![holder.adapterPosition].id)
                 onPostLongClick(newsList.value!![holder.adapterPosition].id)
             }
-            false
+            true
         }
 
 
@@ -65,29 +69,25 @@ class NewsAdapter(
         holder.tvCreationDate.text = formatter.format(Date(currentItem.creationDate))
 
 
-
-
-
-
 //        if (currentItem.imageUrl != null && currentItem.imageUrl != "") {
-            val isExpanded: Boolean = position == mExpandedPosition
+        val isExpanded: Boolean = position == mExpandedPosition
 
 //            holder.layout.visibility = if(isExpanded) View.VISIBLE else View.GONE
         var colapsedHeight = 250
 
 
-            holder.layout.layoutParams.height =
-                if (isExpanded) ViewGroup.LayoutParams.WRAP_CONTENT else colapsedHeight
-            holder.arrowIcon.rotation = if (isExpanded) 180f else 0f
+        holder.layout.layoutParams.height =
+            if (isExpanded) ViewGroup.LayoutParams.WRAP_CONTENT else colapsedHeight
+        holder.arrowIcon.rotation = if (isExpanded) 180f else 0f
 
-            if(isExpanded)
-                previousEpandedPosition = position
+        if (isExpanded)
+            previousEpandedPosition = position
 
-            holder.itemView.setOnClickListener {
-                mExpandedPosition = if (isExpanded) -1 else position
-                notifyItemChanged(previousEpandedPosition)
-                notifyItemChanged(position)
-                scrollToPosition(position)
+        holder.itemView.setOnClickListener {
+            mExpandedPosition = if (isExpanded) -1 else position
+            notifyItemChanged(previousEpandedPosition)
+            notifyItemChanged(position)
+            scrollToPosition(position)
 
 //                if( holder.layout.layoutParams.height == 0){
 //                    holder.layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -102,13 +102,16 @@ class NewsAdapter(
 //                }
 ////            notifyDataSetChanged()
 //                notifyItemChanged(position)
-            }
+        }
 
 
 
-            holder.arrowIcon.visibility = View.VISIBLE
+        holder.arrowIcon.visibility = View.VISIBLE
 //            holder.postHint.visibility = View.VISIBLE
-            holder.progressBar.visibility = View.VISIBLE
+        holder.progressBar.visibility = View.VISIBLE
+
+        holder.videoView.visibility = View.GONE
+        holder.ivPost.visibility = View.GONE
 
         holder.ivPost.setImageDrawable(null)
         if (currentItem.imageUrl != null && currentItem.imageUrl != "") {
@@ -126,10 +129,33 @@ class NewsAdapter(
                     }
                 })
         }
-            else{
+//        else if (currentItem.videoName != null && currentItem.videoName != "") {
+//            val mediaController = MediaController(holder.videoView.context)
+//            mediaController.setAnchorView(holder.videoView)
+//            holder.videoView.setMediaController(mediaController)
+//            holder.videoView.setVideoPath(currentItem.videoUrl)
+//            holder.videoView.visibility = View.VISIBLE
+//            holder.videoView.start()
+//            holder.progressBar.visibility = View.GONE
+//
+////            viewModel.downloadVideo(currentItem.videoName){success, data ->
+////                val input = ByteArrayInputStream(data)
+////                val output = FileOutputStream(currentItem.videoName)
+////                val dataList = ByteArray(4096)
+////                var count: Int
+////                do{
+////                    count = (input.read(dataList))
+////
+////                }
+////                while(count != -1)
+////                holder.videoView.setVideoPath(currentItem.videoName)
+////            }
+//
+//        }
+        else {
             holder.layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             holder.progressBar.visibility = View.GONE
-            }
+        }
 
 //        } else {
 //            holder.progressBar.visibility = View.GONE
@@ -163,5 +189,6 @@ class NewsAdapter(
         val layout = itemView.linear
         val arrowIcon = itemView.arrow_icon
         val postHint = itemView.tv_post_hint
+        val videoView = itemView.video_post
     }
 }

@@ -3,8 +3,6 @@ package lauks.sebastian.footballacademies.view.news
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,19 +12,13 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.activity_create_news.*
 import kotlinx.android.synthetic.main.fragment_news.*
 
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.model.news.News
 import lauks.sebastian.footballacademies.utilities.CustomDialogGenerator
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
-import lauks.sebastian.footballacademies.view.drawer.DrawerActivity
 import lauks.sebastian.footballacademies.viewmodel.news.NewsViewModel
-import androidx.recyclerview.widget.SimpleItemAnimator
-
-
 
 
 /**
@@ -65,7 +57,7 @@ class NewsFragment : Fragment() {
 
         refreshNews()
 
-        news_recycler_view.adapter = NewsAdapter(viewModel.getNewss(), viewModel.getUsers(), onNewsLongClick, scrollToPosition )
+        news_recycler_view.adapter = NewsAdapter(viewModel.getNewss(), viewModel.getUsers(), onNewsLongClick, scrollToPosition, viewModel )
         val linearLayoutManager = LinearLayoutManager(activity)
 //        linearLayoutManager.reverseLayout = true
 //        linearLayoutManager.stackFromEnd = true
@@ -126,6 +118,16 @@ class NewsFragment : Fragment() {
                 if(news.imageName != null){
                     viewModel.removeImage(news.imageName){
                         if (it){
+
+                        }else{
+
+                        }
+                    }
+                }
+
+                if(news.videoName != null && news.videoName != ""){
+                    viewModel.removeVideo(news.videoName){
+                        if(it){
 
                         }else{
 
