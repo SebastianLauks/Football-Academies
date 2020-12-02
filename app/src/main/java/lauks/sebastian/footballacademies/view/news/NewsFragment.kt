@@ -3,6 +3,8 @@ package lauks.sebastian.footballacademies.view.news
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +24,10 @@ import lauks.sebastian.footballacademies.utilities.CustomDialogGenerator
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
 import lauks.sebastian.footballacademies.view.drawer.DrawerActivity
 import lauks.sebastian.footballacademies.viewmodel.news.NewsViewModel
+import androidx.recyclerview.widget.SimpleItemAnimator
+
+
+
 
 /**
  * A simple [Fragment] subclass.
@@ -59,10 +65,11 @@ class NewsFragment : Fragment() {
 
         refreshNews()
 
-        news_recycler_view.adapter = NewsAdapter(viewModel.getNewss(), viewModel.getUsers(), onNewsLongClick)
+        news_recycler_view.adapter = NewsAdapter(viewModel.getNewss(), viewModel.getUsers(), onNewsLongClick, scrollToPosition )
         val linearLayoutManager = LinearLayoutManager(activity)
 //        linearLayoutManager.reverseLayout = true
 //        linearLayoutManager.stackFromEnd = true
+
         news_recycler_view.layoutManager = linearLayoutManager
         news_recycler_view.setHasFixedSize(true)
         viewModel.getNewss().observe(this, Observer { _ ->
@@ -74,6 +81,11 @@ class NewsFragment : Fragment() {
         }
 
         setupFab()
+    }
+
+    private val scrollToPosition = { position: Int ->
+        news_recycler_view.scrollToPosition(position)
+
     }
 
     override fun onResume() {
@@ -106,14 +118,29 @@ class NewsFragment : Fragment() {
                 "Tak",
                 "Nie"
             ) {
-                viewModel.removeNews(news.id)
-                Toast.makeText(context, "Post został usunięty", Toast.LENGTH_SHORT).show()
-                refreshNews()
+                viewModel.removeNews(news.id){
+                    Toast.makeText(context, "Post został usunięty", Toast.LENGTH_SHORT).show()
+                    refreshNews()
+                }
+
+                if(news.imageName != null){
+                    viewModel.removeImage(news.imageName){
+                        if (it){
+
+                        }else{
+
+                        }
+                    }
+                }
+
             }
         } else {
             Toast.makeText(context, "Nie można usuwać cudzych postów", Toast.LENGTH_SHORT).show()
         }
     }
+
+
+
 
     private fun refreshNews(){
         news_swipe_refresh_layout.isRefreshing = true

@@ -1,46 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/news_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="4dp"
-    app:strokeWidth="0.5dp"
-    app:strokeColor="@color/customBlackColor"
+    android:theme="@style/ItemTheme"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
-    android:theme="@style/ItemTheme">
+    app:strokeColor="@color/customBlackColor"
+    app:strokeWidth="0.5dp">
 
     <LinearLayout
+        android:id="@+id/all_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:orientation="vertical">
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:padding="8dp">
 
-
-
-
-
-        <TextView
-            android:id="@+id/tv_post_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="28dp"
-            android:text="Title"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_post_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Title"
+                android:textSize="28dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/arrow_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:src="@drawable/baseline_expand_more_24"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_post_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Content"/>
+            android:text="Content" />
+
+        <TextView
+            android:id="@+id/tv_post_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:text="Rozwiń aby zobaczyć zdjęcie..."
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible" />
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_margin="8dp"
             android:background="@android:color/darker_gray" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -53,16 +108,16 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="4dp"
-                android:textStyle="normal"
-                android:text="Imię" />
+                android:text="Imię"
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/tv_post_lastname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/tv_post_firstname"
-                android:textStyle="normal"
-                android:text="Nazwisko" />
+                android:text="Nazwisko"
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/tv_post_date"

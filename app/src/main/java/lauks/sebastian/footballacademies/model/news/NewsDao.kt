@@ -52,7 +52,6 @@ class NewsDao {
                 newsList.clear()
                 usersList.clear()
                 if(snapshot.value != null){
-                    Log.d("TAGGGG", snapshot.toString())
                     snapshot.children.forEach { child ->
                         @Suppress("UNCHECKED_CAST") val newsMap = child.value as HashMap<String, *>
                         val id = newsMap["id"].toString()
@@ -68,8 +67,10 @@ class NewsDao {
                         val creationDate = newsMap["creationDate"].toString().toLong()
                         val title = newsMap["title"].toString()
                         val content = newsMap["content"].toString()
+                        val imageName = newsMap["imageName"]?.toString()
+                        val imageUrl = newsMap["imageUrl"]?.toString()
 
-                        val news = News(id, authorId, academyId, title, content, creationDate)
+                        val news = News(id, authorId, academyId, title, content, creationDate,imageName, imageUrl)
 
                         newsList.add(news)
                     }
@@ -121,16 +122,17 @@ class NewsDao {
     }
 
 
-    fun removeNews(newsId: String){
+    fun removeNews(newsId: String, callback: () -> Unit){
         newsInFB.child(newsId).removeValue()
+        callback()
     }
 
-    fun addNews(authorId: String, title: String, content: String, creationDate: Date){
+    fun addNews(authorId: String, title: String, content: String, creationDate: Date, imageName: String?, imageUrl:String?){
         val pushedNewsRef = newsInFB.push()
         val pushedNewsId = pushedNewsRef.key
 
         //THIS IS OLD - dont do it -> HERE DOWNLOAD USER OF ID authorID
-        val news = News(pushedNewsId!!, authorId,academyKey, title, content, creationDate.time)
+        val news = News(pushedNewsId!!, authorId,academyKey, title, content, creationDate.time, imageName, imageUrl)
 //        news.id = pushedNewsId!!
 //        news.academyId = academyKey
         newsInFB.child(news.id).setValue(news)

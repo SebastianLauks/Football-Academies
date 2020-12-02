@@ -11,10 +11,10 @@ class NewsRepository private constructor(private val newsDao: NewsDao){
     fun getNewss() = newsDao.getNewss()
     fun getUsers() = newsDao.getUsers()
 
-    fun addNews(authorId: String, title: String, content: String, creationDate: Date){
-        newsDao.addNews(authorId, title, content, creationDate)
+    fun addNews(authorId: String, title: String, content: String, creationDate: Date, imageName: String?, imageUrl:String?){
+        newsDao.addNews(authorId, title, content, creationDate, imageName, imageUrl)
     }
-    fun removeNews(newsId: String) = newsDao.removeNews(newsId)
+    fun removeNews(newsId: String, callback: () -> Unit) = newsDao.removeNews(newsId, callback)
 
     companion object{
         // Singleton instantiation you already know and love

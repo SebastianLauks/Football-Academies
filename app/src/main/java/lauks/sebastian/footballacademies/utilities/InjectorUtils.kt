@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.utilities
 
 import lauks.sebastian.footballacademies.model.Database
+import lauks.sebastian.footballacademies.model.StorageDao
 import lauks.sebastian.footballacademies.model.academy.AcademyRepository
 import lauks.sebastian.footballacademies.model.events.EventRepository
 import lauks.sebastian.footballacademies.model.news.NewsRepository
@@ -23,7 +24,8 @@ object InjectorUtils {
 
     fun provideNewsViewModelFactory(): NewsViewModelFactory{
         val newsRepository = NewsRepository.getInstance(Database.getInstance().newsDao)
-        return NewsViewModelFactory(newsRepository)
+        val storageDao = StorageDao.getInstance()
+        return NewsViewModelFactory(newsRepository, storageDao )
     }
 
 
