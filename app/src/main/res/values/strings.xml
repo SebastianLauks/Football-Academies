@@ -2,7 +2,7 @@
     <string name="app_name">Akademie Piłkarskie</string>
     <string name="menu_news">Aktualności</string>
     <string name="menu_events">Wydarzenia</string>
-    <string name="menu_squad">Skład</string>
+    <string name="menu_squad">Członkowie</string>
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="create_news_title">Nowy post</string>
@@ -35,6 +35,13 @@
         <item>Zawodnik</item>
         <item>Opiekun</item>
         <item>Pracownik</item>
+    </string-array>
+
+    <string-array name="squad_roles">
+        <item>Zawodnicy</item>
+        <item>Opiekunowie</item>
+        <item>Pracownicy</item>
+        <item>Bez roli</item>
     </string-array>
 
     <string name="create_event_title">Nowe wydarzenie</string>
