@@ -14,6 +14,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import lauks.sebastian.footballacademies.R
+import lauks.sebastian.footballacademies.utilities.CustomDialogGenerator
 import lauks.sebastian.footballacademies.view.news.NewsFragment
 import lauks.sebastian.footballacademies.view.events.EventsFragment
 import lauks.sebastian.footballacademies.view.events.FilterEventsActivity
@@ -26,6 +27,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     lateinit var squadFragment: SquadFragment
     var actionBar: ActionBar? = null
     var filterButton: MenuItem? = null
+    private lateinit var academyId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +36,7 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         actionBar = supportActionBar
 
-
+        academyId = intent.extras!!.get("chosenAcademyId").toString()
 
         val drawerToggle = ActionBarDrawerToggle(this, drawerLayout,toolbar, R.string.open, R.string.close)
         drawerToggle.isDrawerIndicatorEnabled = true
@@ -96,7 +98,9 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            CustomDialogGenerator.createCustomDialog(this, "Czy chcesz wyjść z widoku akademii?", "Tak", "Nie"){
+                super.onBackPressed()
+            }
         }
     }
 
@@ -115,9 +119,16 @@ class DrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 startActivity(intent)
                 return true
             }
+            R.id.info_button -> {
+                val intent = Intent(applicationContext, InfoActivity::class.java)
+                intent.putExtra("chosenAcademyId", academyId)
+                startActivity(intent)
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
+
 
     private fun showFilterButton(){
         filterButton!!.isVisible = true

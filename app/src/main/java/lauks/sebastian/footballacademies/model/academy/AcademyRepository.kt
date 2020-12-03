@@ -9,7 +9,7 @@ class AcademyRepository private constructor(private val academyDao: AcademyDao){
     fun addToSquad(academyCode: String, joinAcademyCallback: (joined: Boolean) -> Unit) = academyDao.addToSquad(academyCode, joinAcademyCallback)
 
     fun startListening(loggedUserId: String, hideRefreshingIncdicator: () -> Unit) = academyDao.startListening(loggedUserId, hideRefreshingIncdicator)
-
+    fun fetchAcademy(academyId: String, callback: (academy: Academy) -> Unit) = academyDao.fetchAcademy(academyId, callback)
     fun getAcademies() = academyDao.getAcademies()
 
     companion object{

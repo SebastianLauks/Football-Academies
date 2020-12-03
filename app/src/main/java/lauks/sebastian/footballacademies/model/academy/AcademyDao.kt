@@ -54,6 +54,29 @@ class AcademyDao {
         })
     }
 
+    fun fetchAcademy(academyId: String, callback: (academy: Academy) -> Unit){
+        academiesInFB.orderByChild("id").equalTo(academyId).addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.value != null){
+                    snapshot.children.forEach {
+                        @Suppress("UNCHECKED_CAST") val academyMap = it.value as HashMap<String, *>
+                        val academy = Academy(
+                            academyMap["id"].toString(),
+                            academyMap["name"].toString(),
+                            academyMap["code"].toString(),
+                            getPlayersIds(academyMap["players"])
+                        )
+                        callback(academy)
+                    }
+                }
+            }
+        })
+    }
+
     private fun getPlayersIds(players: Any?): MutableList<String> {
         val playersList = mutableListOf<String>()
         if (players != null) {
