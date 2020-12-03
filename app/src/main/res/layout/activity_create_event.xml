@@ -23,7 +23,8 @@
         android:ellipsize="start"
         android:ems="10"
         android:hint="Miejsce..."
-        android:inputType="text" />
+        android:inputType="text"
+        android:focusable="false"/>
 
     <EditText
         android:id="@+id/et_events_date"

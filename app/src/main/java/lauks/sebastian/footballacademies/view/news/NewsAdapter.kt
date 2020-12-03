@@ -5,9 +5,11 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.MediaController
 import androidx.core.os.persistableBundleOf
 import androidx.lifecycle.LiveData
@@ -79,6 +81,13 @@ class NewsAdapter(
         holder.layout.layoutParams.height =
             if (isExpanded) ViewGroup.LayoutParams.WRAP_CONTENT else colapsedHeight
         holder.arrowIcon.rotation = if (isExpanded) 180f else 0f
+
+
+
+//        var gravityy = if (isExpanded) Gravity.CENTER_HORIZONTAL else Gravity.START
+//        val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, if (isExpanded) ViewGroup.LayoutParams.WRAP_CONTENT else colapsedHeight)
+//        params.gravity = gravityy
+//        holder.layout.layoutParams = params
 
         if (isExpanded)
             previousEpandedPosition = position

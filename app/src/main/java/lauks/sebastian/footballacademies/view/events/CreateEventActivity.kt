@@ -4,6 +4,7 @@ import android.app.ActionBar
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -88,8 +89,17 @@ class CreateEventActivity : AppCompatActivity() {
         setUpSpinner()
         setUpDatePicker()
         setUpTimePicker()
+        setUpPlacePicker()
 
 
+    }
+
+    private  fun setUpPlacePicker(){
+        et_events_place.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+
+        }
     }
 
     private fun setUpTimePicker() {

@@ -52,4 +52,5 @@
     <string name="join_academy_joined">Dołączono do akademii.</string>
     <string name="create_academy_title">Utwórz akademię.</string>
     <string name="join_academy_title">Dołącz do akademii</string>
+    <string name="title_activity_maps"></string>
 </resources>
