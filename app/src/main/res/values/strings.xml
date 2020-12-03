@@ -30,6 +30,12 @@
         <item>Obecni</item>
         <item>Nieobecni</item>
     </string-array>
+    <string-array name="user_roles">
+        <item>Nie podano</item>
+        <item>Zawodnik</item>
+        <item>Opiekun</item>
+        <item>Pracownik</item>
+    </string-array>
 
     <string name="create_event_title">Nowe wydarzenie</string>
     <string name="filter_event_title">Filtr wydarzeń</string>

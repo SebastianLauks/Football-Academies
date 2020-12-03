@@ -191,6 +191,13 @@ class EventsDao {
                                                         userMap.get("weight")?.toString()?.toInt()
                                                     val prefFoot =
                                                         userMap.get("prefFoot")?.toString()?.toInt()
+                                                    val role =
+                                                        userMap.get("role")?.toString()?.toInt()
+                                                    val imageName =
+                                                        userMap.get("imageName")?.toString()
+                                                    val imageUrl =
+                                                    userMap.get("imageUrl")?.toString()
+
 
                                                     val player = Player(
                                                         id,
@@ -199,7 +206,8 @@ class EventsDao {
                                                         height,
                                                         weight,
                                                         age,
-                                                        prefFoot
+                                                        prefFoot,
+                                                        role, imageName, imageUrl
                                                     )
                                                     if (allUsers.size > 0 && !allUsers.any { user -> user.id == id }) {
                                                         removeFromConfirmedParticipants(eventKey, id)
@@ -295,6 +303,12 @@ class EventsDao {
                                                         userMap.get("weight")?.toString()?.toInt()
                                                     val prefFoot =
                                                         userMap.get("prefFoot")?.toString()?.toInt()
+                                                    val role =
+                                                        userMap.get("role")?.toString()?.toInt()
+                                                    val imageName =
+                                                        userMap.get("imageName")?.toString()
+                                                    val imageUrl =
+                                                        userMap.get("imageUrl")?.toString()
 
                                                     val player = Player(
                                                         id,
@@ -303,7 +317,7 @@ class EventsDao {
                                                         height,
                                                         weight,
                                                         age,
-                                                        prefFoot
+                                                        prefFoot,role, imageName, imageUrl
                                                     )
                                                     allUsers.add(player)
                                                     if(++itemsProcessed == playersIds.size){

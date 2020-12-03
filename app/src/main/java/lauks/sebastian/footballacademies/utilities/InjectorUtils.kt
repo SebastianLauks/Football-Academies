@@ -41,7 +41,8 @@ object InjectorUtils {
 
     fun provideProfileViewModelFactory(): ProfileViewModelFactory{
         val userRepository = UserRepository.getInstance(Database.getInstance().userDao)
-        return ProfileViewModelFactory(userRepository)
+        val storageDao = StorageDao.getInstance()
+        return ProfileViewModelFactory(userRepository,storageDao)
     }
 
 }

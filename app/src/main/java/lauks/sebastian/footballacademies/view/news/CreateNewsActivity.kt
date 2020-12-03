@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.media.CamcorderProfile
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -109,7 +111,8 @@ class CreateNewsActivity : AppCompatActivity() {
 
         bt_add_image.setOnClickListener {
             val photoIntent = Intent(Intent.ACTION_PICK)
-            photoIntent.type = "image/* video/*"
+//            photoIntent.type = "image/* video/*"
+            photoIntent.type = "image/*"
             startActivityForResult(photoIntent, PHOTO_STATUS_CODE)
         }
     }

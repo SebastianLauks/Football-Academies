@@ -55,8 +55,14 @@ class SquadDao  {
                                                 val age = userMap.get("age")?.toString()?.toInt()
                                                 val weight = userMap.get("weight")?.toString()?.toInt()
                                                 val prefFoot = userMap.get("prefFoot")?.toString()?.toInt()
+                                                val role =
+                                                    userMap.get("role")?.toString()?.toInt()
+                                                val imageName =
+                                                    userMap.get("imageName")?.toString()
+                                                val imageUrl =
+                                                    userMap.get("imageUrl")?.toString()
 
-                                                val player = Player(id, firstname, lastname, height, weight, age, prefFoot)
+                                                val player = Player(id, firstname, lastname, height, weight, age, prefFoot, role, imageName, imageUrl)
                                                 playersList.add(player)
                                             }
                                         }

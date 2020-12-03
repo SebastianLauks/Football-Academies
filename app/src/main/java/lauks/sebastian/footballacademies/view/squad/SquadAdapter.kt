@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.squad_item.view.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.model.Player
@@ -42,6 +43,11 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
         }
         holder.tvPrefFoot.text = prefFootText
 
+        holder.ivImage.setImageResource(R.drawable.avatar_default)
+        if(currentItem.imageUrl != null && currentItem.imageUrl != ""){
+            Picasso.get().load(currentItem.imageUrl).into(holder.ivImage)
+        }
+
     }
 
 
@@ -54,5 +60,6 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
         val tvAge = itemView.tv_squad_age_value
         val tvSquadHeightUnit = itemView.tv_squad_height_unit
         val tvSquadWeightUnit = itemView.tv_squad_weight_unit
+        val ivImage = itemView.iv_image
     }
 }
