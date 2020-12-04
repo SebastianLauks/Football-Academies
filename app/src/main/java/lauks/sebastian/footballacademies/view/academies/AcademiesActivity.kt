@@ -90,7 +90,7 @@ class AcademiesActivity : AppCompatActivity() {
     override fun onBackPressed() {
         CustomDialogGenerator.createCustomDialog(this, "Czy chcesz się wylogować?", "Tak", "Nie"){
             val sharedPref = getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE)
-            sharedPref.edit().remove("loggedUserId").commit()
+            sharedPref.edit().remove("loggedUserId").apply()
             super.onBackPressed()
         }
     }

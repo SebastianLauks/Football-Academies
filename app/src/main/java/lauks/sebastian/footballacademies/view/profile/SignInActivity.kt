@@ -19,6 +19,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var login: String
     private lateinit var password: String
     private lateinit var loadingIndicator: ProgressBar
+    private var checkedFirstTime = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,35 +47,38 @@ class SignInActivity : AppCompatActivity() {
 
     }
 
-    private val successfulSignIn = {success:Boolean ->
+    private val successfulSignIn = { success: Boolean ->
         loadingIndicator.visibility = View.GONE
-        if (success){
-            val sharedPref = getSharedPreferences( resources.getString(R.string.app_name),Context.MODE_PRIVATE)
-            with (sharedPref.edit()){
+        if (success) {
+            val sharedPref =
+                getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+            with(sharedPref.edit()) {
                 putString("loggedUserId", login)
                 commit()
             }
+
             val intent = Intent(this, AcademiesActivity::class.java)
             startActivity(intent)
-        }else{
+        } else {
             et_password.setText("")
-            Toast.makeText(this, "Niepoprawna nazwa użytkownika lub hasło", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Niepoprawna nazwa użytkownika lub hasło", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
-    private fun checkIfUsersIsAlreadyLogged(){
+    private fun checkIfUsersIsAlreadyLogged() {
         layout_content.visibility = View.GONE
         loadingIndicator.visibility = View.VISIBLE
-        val sharedPref = getSharedPreferences( resources.getString(R.string.app_name),Context.MODE_PRIVATE)
+        val sharedPref =
+            getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE)
         val userId = sharedPref.getString("loggedUserId", "unknown").toString()
-        if(userId !="unknown" ){
+        if (userId != "unknown") {
             val intent = Intent(this, AcademiesActivity::class.java)
             startActivity(intent)
             Toast.makeText(this, "Zalogowano jako $userId", Toast.LENGTH_SHORT).show()
-        }else{
-            layout_content.visibility = View.VISIBLE
-            loadingIndicator.visibility = View.GONE
         }
+        layout_content.visibility = View.VISIBLE
+        loadingIndicator.visibility = View.GONE
     }
 
 }
