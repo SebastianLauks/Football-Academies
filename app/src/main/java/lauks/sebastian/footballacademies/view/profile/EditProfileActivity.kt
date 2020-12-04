@@ -177,16 +177,20 @@ showRefreshingIndicator()
                 et_edit_profile_height.visibility = View.VISIBLE
                 et_edit_profile_weight.visibility = View.VISIBLE
                 spinner_edit_profile_pref_foot.visibility = View.VISIBLE
+                et_edit_profile_age.visibility = View.VISIBLE
                 tv_edit_profile_height.visibility = View.VISIBLE
                 tv_edit_profile_weight.visibility = View.VISIBLE
                 tv_edit_profile_pref_foot.visibility = View.VISIBLE
+                tv_edit_profile_age.visibility = View.VISIBLE
                 if(position != 1){
                     tv_edit_profile_height.visibility = View.GONE
                     tv_edit_profile_weight.visibility = View.GONE
                     tv_edit_profile_pref_foot.visibility = View.GONE
+                    et_edit_profile_age.visibility = View.GONE
                     et_edit_profile_height.visibility = View.GONE
                     et_edit_profile_weight.visibility = View.GONE
                     spinner_edit_profile_pref_foot.visibility = View.GONE
+                    tv_edit_profile_age.visibility = View.GONE
                 }
                     }
 

@@ -36,6 +36,12 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
         holder.tvHeight.text = if (currentItem.height!= null) currentItem.height.toString() else "".also { holder.tvSquadHeightUnit.visibility = View.GONE }
         holder.tvWeight.text = if (currentItem.weight!= null) currentItem.weight.toString() else "".also { holder.tvSquadWeightUnit.visibility = View.GONE }
 
+
+        holder.rvUserDetails.visibility = View.GONE
+        if(currentItem.role == 1){
+            holder.rvUserDetails.visibility = View.VISIBLE
+        }
+
         val prefFootText = when(currentItem.prefFoot){
             1 -> "prawa"
             2 -> "lewa"
@@ -62,5 +68,6 @@ class SquadAdapter(private val playersList: LiveData<List<Player>>) :
         val tvSquadHeightUnit = itemView.tv_squad_height_unit
         val tvSquadWeightUnit = itemView.tv_squad_weight_unit
         val ivImage = itemView.iv_image
+        val rvUserDetails = itemView.user_details
     }
 }
