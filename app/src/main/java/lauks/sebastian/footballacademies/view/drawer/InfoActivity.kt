@@ -55,7 +55,7 @@ class InfoActivity : AppCompatActivity() {
                 clipboard.setPrimaryClip(clip)
                 Toast.makeText(this, "Kod został skopiowany", Toast.LENGTH_SHORT).show()
             }
-            false
+            true
         }
 
 

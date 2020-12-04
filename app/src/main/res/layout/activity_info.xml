@@ -18,6 +18,7 @@
         android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_info"
@@ -26,7 +27,7 @@
             android:layout_margin="40dp"
             android:textSize="25sp"
             android:textAlignment="center"
-            android:text="Poniżej znajduje się unikalny kod tej akademii. Udostępnij go innym użytkownikom, aby mogli do niej dołączyć." />
+            android:text="Poniżej znajduje się unikalny kod tej akademii. Udostępnij go innym użytkownikom, aby mogli do niej dołączyć. \n \n Pokaż kod, a następnie przytrzymaj dłużej, aby skopiować." />
 
         <TextView
             android:id="@+id/tv_info_code"
