@@ -84,7 +84,8 @@ class EventsDao {
                                 val notes: String = eventMap["notes"].toString()
                                 val confirmedParticipants =
                                     getConfirmedParticipants(eventMap["confirmedParticipants"])
-
+                                val placeLat = eventMap["placeLat"]?.toString()?.toDouble()
+                                val placeLng = eventMap["placeLng"]?.toString()?.toDouble()
 
                                 val event = Event(
                                     id,
@@ -94,7 +95,8 @@ class EventsDao {
                                     date,
                                     place,
                                     notes,
-                                    confirmedParticipants
+                                    confirmedParticipants,
+                                    placeLat, placeLng
                                 ) // ToDo properly download list of users
                                 eventsList.add(event)
                             }
@@ -468,13 +470,13 @@ class EventsDao {
     }
 
 
-    fun addEvent(authorId: String, type: String, date: Long, place: String, notes: String) {
+    fun addEvent(authorId: String, type: String, date: Long, place: String, notes: String, placeLat: Double, placeLng: Double) {
         eventsInFB = Firebase.database.reference.child("Events")
         val pushedEventRef = eventsInFB.push()
         val pushedEventId = pushedEventRef.key
 
         val event =
-            Event(pushedEventId!!, authorId, academyKey, type, date, place, notes, listOf())
+            Event(pushedEventId!!, authorId, academyKey, type, date, place, notes, listOf(), placeLat, placeLng)
 
         eventsInFB.child(event.id).setValue(event)
     }

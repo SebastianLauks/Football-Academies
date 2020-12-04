@@ -1,6 +1,8 @@
 package lauks.sebastian.footballacademies.view.events
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -67,6 +70,7 @@ class EventDetailsActivity : AppCompatActivity() {
 
         setupItemsViews()
         setupSpinner()
+        setupMapButton()
 
         swipe_refresh_layout.setOnRefreshListener {
             refreshLayout()
@@ -131,6 +135,22 @@ class EventDetailsActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun setupMapButton(){
+        bt_map.setOnClickListener {
+            onMapButtonClicked(event.placeLat, event.placeLng)
+        }
+    }
+    private val onMapButtonClicked = { lat: Double?, lng: Double? ->
+        if(lat != null && lng != null){
+            val uri = "http://maps.google.com/maps?daddr=$lat,$lng"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+            startActivity(intent)
+        }else{
+            Toast.makeText(applicationContext, "Brak danych geolokalizacyjnych", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun setUsersToDisplay() {

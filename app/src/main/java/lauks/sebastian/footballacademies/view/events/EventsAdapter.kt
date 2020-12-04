@@ -17,7 +17,8 @@ class EventsAdapter(
     private val eventsList: LiveData<List<Event>>,
     private val onChangePresence: (eventId: String, presence: Boolean) -> Unit,
     private val onEventLongClick: (eventId: String) -> Unit,
-    private val onEventClick: (event: Event) -> Unit
+    private val onEventClick: (event: Event) -> Unit,
+    private val onMapButtonClicked: (lat: Double?, lng: Double?) -> Unit
 ) : RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
 
     private lateinit var loggedUserId: String
@@ -39,6 +40,10 @@ class EventsAdapter(
 
         holder.itemView.setOnClickListener {
             onEventClick(eventsList.value!![holder.adapterPosition])
+        }
+
+        holder.btMap.setOnClickListener {
+            onMapButtonClicked(eventsList.value!![holder.adapterPosition].placeLat, eventsList.value!![holder.adapterPosition].placeLng)
         }
 
         val sharedPref = parent.context.getSharedPreferences(parent.context.resources.getString(R.string.app_name),
@@ -80,6 +85,7 @@ class EventsAdapter(
         val tvTimestamp = itemView.tv_event_timestamp
         val tvContent = itemView.tv_event_content
         val switchButton = itemView.switch_event
+        val btMap = itemView.bt_map
 
 
     }

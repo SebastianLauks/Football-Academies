@@ -8,8 +8,8 @@ class EventRepository private constructor(private val eventsDao: EventsDao) {
     fun getEvents() = eventsDao.getEvents()
     fun getUserEventsFilters(updateEventsFiltersCheckboxes: (Boolean, Boolean, Boolean) -> Unit) = eventsDao.getUserEventsFilters(updateEventsFiltersCheckboxes)
     fun startListening(chosenAcademyId: String, loggedUserId: String, hideRefreshingIndicator: () -> Unit) = eventsDao.startListening(chosenAcademyId, loggedUserId, hideRefreshingIndicator)
-    fun addEvent(authorId: String, type: String, date: Long, place: String, notes: String) =
-        eventsDao.addEvent(authorId, type, date, place, notes)
+    fun addEvent(authorId: String, type: String, date: Long, place: String, notes: String, placeLat: Double, placeLng: Double) =
+        eventsDao.addEvent(authorId, type, date, place, notes, placeLat, placeLng)
     fun setUserEventsFilters(matches: Boolean, tournaments: Boolean, trainings: Boolean, finish: () -> Unit) = eventsDao.setUserEventsFilters(matches, tournaments, trainings, finish)
     fun fetchAllUsers(callback: () -> Unit) = eventsDao.fetchAllUsers(callback)
     fun fetchConfirmedParticipants(eventId: String, callback: () -> Unit ) = eventsDao.fetchConfirmedParticipants(eventId, callback)

@@ -1,6 +1,7 @@
 package lauks.sebastian.footballacademies.view.events
 
 import android.app.ActionBar
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_create_event.*
 import lauks.sebastian.footballacademies.R
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
@@ -25,6 +27,10 @@ class CreateEventActivity : AppCompatActivity() {
     val cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Warsaw"))
     private lateinit var viewModel: EventsViewModel
     private lateinit var loggedUserId: String
+    private val PLACE_RESULT_CODE = 100
+    private var placeAddress: String? = null
+    private var placeLat: Double? = null
+    private var placeLng: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +75,9 @@ class CreateEventActivity : AppCompatActivity() {
                         resources.getStringArray(R.array.event_types_array)[spinner_events_type.selectedItemPosition],
                         SimpleDateFormat("dd/MM/yyyy HH:mm").parse(et_events_date.text.toString() + " " + et_events_time.text.toString()).time,
                         et_events_place.text.toString(),
-                        et_events_notes.text.toString())
+                        et_events_notes.text.toString(),
+                        placeLat!!,
+                        placeLng!!)
 
                     spinner_events_type.setSelection(0)
                     et_events_date.setText("")
@@ -94,10 +102,32 @@ class CreateEventActivity : AppCompatActivity() {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == PLACE_RESULT_CODE){
+                placeAddress = data?.getStringExtra("placeAddress")
+                placeLat = data?.getDoubleExtra("placeLat", 0.0)
+                placeLng = data?.getDoubleExtra("placeLng", 0.0)
+                et_events_place.setText(placeAddress)
+            }
+        }
+    }
+
     private  fun setUpPlacePicker(){
         et_events_place.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)
-            startActivity(intent)
+
+            if(placeAddress != null && placeLat!= null && placeLng != null){
+                intent.putExtra("place", placeAddress)
+                intent.putExtra("lat", placeLat!!)
+                intent.putExtra("lon", placeLng!!)
+
+            }
+
+
+            startActivityForResult(intent, PLACE_RESULT_CODE)
 
         }
     }

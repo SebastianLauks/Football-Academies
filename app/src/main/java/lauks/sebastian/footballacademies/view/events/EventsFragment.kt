@@ -3,6 +3,7 @@ package lauks.sebastian.footballacademies.view.events
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -68,7 +69,7 @@ class EventsFragment : Fragment() {
 
         refreshListOfEvents()
 
-        events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), onChangePresence, onEventLongClick, onEventClick)
+        events_recycler_view.adapter = EventsAdapter(viewModel.getEvents(), onChangePresence, onEventLongClick, onEventClick, onMapButtonClicked)
         val linearLayoutManager = LinearLayoutManager(activity)
 //        linearLayoutManager.reverseLayout = true
 //        linearLayoutManager.stackFromEnd = true
@@ -97,6 +98,17 @@ class EventsFragment : Fragment() {
             val intent = Intent(context, CreateEventActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private val onMapButtonClicked = { lat: Double?, lng: Double? ->
+        if(lat != null && lng != null){
+            val uri = "http://maps.google.com/maps?daddr=$lat,$lng"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+            startActivity(intent)
+        }else{
+            Toast.makeText(context, "Brak danych geolokalizacyjnych", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private val onChangePresence = { eventId:String, presence: Boolean ->
