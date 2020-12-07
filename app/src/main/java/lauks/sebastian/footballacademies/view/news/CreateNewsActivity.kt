@@ -111,8 +111,8 @@ class CreateNewsActivity : AppCompatActivity() {
 
         bt_add_image.setOnClickListener {
             val photoIntent = Intent(Intent.ACTION_PICK)
-//            photoIntent.type = "image/* video/*"
-            photoIntent.type = "image/*"
+            photoIntent.type = "image/* video/*"
+//            photoIntent.type = "image/*"
             startActivityForResult(photoIntent, PHOTO_STATUS_CODE)
         }
     }

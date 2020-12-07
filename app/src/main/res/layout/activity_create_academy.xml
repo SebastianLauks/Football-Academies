@@ -38,6 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@android:color/transparent"
-            android:text="DODAJ" />
+            android:text="UTWÓRZ" />
     </LinearLayout>
 </LinearLayout>

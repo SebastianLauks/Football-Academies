@@ -1,9 +1,11 @@
 package lauks.sebastian.footballacademies.view.news
 
 import android.app.ActionBar
+import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -78,10 +80,12 @@ class NewsAdapter(
         var colapsedHeight = 250
 
 
+        holder.ivPost.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+        holder.ivPost.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+
         holder.layout.layoutParams.height =
             if (isExpanded) ViewGroup.LayoutParams.WRAP_CONTENT else colapsedHeight
         holder.arrowIcon.rotation = if (isExpanded) 180f else 0f
-
 
 
 //        var gravityy = if (isExpanded) Gravity.CENTER_HORIZONTAL else Gravity.START
@@ -137,31 +141,49 @@ class NewsAdapter(
 
                     }
                 })
-        }
-//        else if (currentItem.videoName != null && currentItem.videoName != "") {
-//            val mediaController = MediaController(holder.videoView.context)
-//            mediaController.setAnchorView(holder.videoView)
-//            holder.videoView.setMediaController(mediaController)
-//            holder.videoView.setVideoPath(currentItem.videoUrl)
-//            holder.videoView.visibility = View.VISIBLE
+        } else if (currentItem.videoName != null && currentItem.videoName != "") {
+            if(isExpanded){
+                val mediaController = MediaController(holder.videoView.context)
+                mediaController.setAnchorView(holder.videoView)
+                holder.videoView.visibility = View.VISIBLE
+                holder.videoView.setMediaController(mediaController)
+                holder.videoView.setVideoPath(currentItem.videoUrl)
+                holder.videoView.setOnPreparedListener {
+                    //                    holder.videoView.stopPlayback()
+                    holder.progressBar.visibility = View.GONE
+                }
+
 //            holder.videoView.start()
-//            holder.progressBar.visibility = View.GONE
+
+
+                holder.videoView.setOnClickListener {
+
+                }
+// in order to not collapse card when click on video.
+            }else{
+                holder.ivPost.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                holder.ivPost.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+                holder.ivPost.setImageResource(R.drawable.video)
+                holder.ivPost.visibility = View.VISIBLE
+                holder.progressBar.visibility = View.GONE
+            }
+
+//            if (!isExpanded) holder.videoView.stopPlayback()
+
+//            viewModel.downloadVideo(currentItem.videoName){success, data ->
+//                val input = ByteArrayInputStream(data)
+//                val output = FileOutputStream(currentItem.videoName)
+//                val dataList = ByteArray(4096)
+//                var count: Int
+//                do{
+//                    count = (input.read(dataList))
 //
-////            viewModel.downloadVideo(currentItem.videoName){success, data ->
-////                val input = ByteArrayInputStream(data)
-////                val output = FileOutputStream(currentItem.videoName)
-////                val dataList = ByteArray(4096)
-////                var count: Int
-////                do{
-////                    count = (input.read(dataList))
-////
-////                }
-////                while(count != -1)
-////                holder.videoView.setVideoPath(currentItem.videoName)
-////            }
-//
-//        }
-        else {
+//                }
+//                while(count != -1)
+//                holder.videoView.setVideoPath(currentItem.videoName)
+//            }
+
+        } else {
             holder.layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             holder.progressBar.visibility = View.GONE
         }

@@ -138,7 +138,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         fusedLocationClient.lastLocation.addOnSuccessListener(this) {
                 location ->
-            Log.d("loca", location.toString())
             if(location != null){
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
