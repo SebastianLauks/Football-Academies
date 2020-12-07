@@ -82,6 +82,7 @@ class NewsAdapter(
 
         holder.ivPost.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
         holder.ivPost.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        holder.videoView.alpha = 0f
 
         holder.layout.layoutParams.height =
             if (isExpanded) ViewGroup.LayoutParams.WRAP_CONTENT else colapsedHeight
@@ -151,6 +152,7 @@ class NewsAdapter(
                 holder.videoView.setOnPreparedListener {
                     //                    holder.videoView.stopPlayback()
                     holder.progressBar.visibility = View.GONE
+                    holder.videoView.alpha = 1f
                 }
 
 //            holder.videoView.start()
