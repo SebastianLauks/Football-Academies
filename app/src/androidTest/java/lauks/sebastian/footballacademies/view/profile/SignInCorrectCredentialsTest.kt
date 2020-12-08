@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.LargeTest
@@ -16,75 +16,91 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
-import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Exception
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class SignInToSignUpTest {
+class SignInCorrectCredentialsTest {
 
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(SignInActivity::class.java)
 
     @Test
-    fun signInToSignUp() {
+    fun signInSuccesfullTest() {
         try{
-        val appCompatButton = onView(
+        val appCompatEditText = onView(
             allOf(
-                withId(R.id.bt_sign_up_ref), withText("Rejestracja"),
+                withId(R.id.et_login),
                 childAtPosition(
                     childAtPosition(
                         withId(R.id.layout_content),
-                        2
+                        1
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText.perform(replaceText("user"), closeSoftKeyboard())
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatEditText2 = onView(
+            allOf(
+                withId(R.id.et_password),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.layout_content),
+                        1
                     ),
                     1
                 ),
                 isDisplayed()
             )
         )
+        appCompatEditText2.perform(replaceText("123"), closeSoftKeyboard())
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatButton = onView(
+            allOf(
+                withId(R.id.bt_sign_in), withText("Zaloguj się"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.layout_content),
+                        1
+                    ),
+                    2
+                ),
+                isDisplayed()
+            )
+        )
         appCompatButton.perform(click())
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        val editText = onView(withId(R.id.et_login))
-        editText.check(matches(isDisplayed()))
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        val editText2 = onView(withId(R.id.et_password))
-        editText2.check(matches(isDisplayed()))
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        val editText3 = onView(withId(R.id.et_password_repeat))
-
-//            onView(
-//            allOf(
-//                withId(R.id.et_password_repeat), withText("Powtórz hasło"),
-//                childAtPosition(
-//                    childAtPosition(
-//                        IsInstanceOf.instanceOf(android.widget.LinearLayout::class.java),
-//                        2
-//                    ),
-//                    2
-//                ),
-//                isDisplayed()
-//            )
-//        )
-        editText3.check(matches(isDisplayed()))
         }catch (e: Exception){
-        Log.d("CheckSignIn", "User has been already sign in")
+            Log.d("CheckSignIn", "User has been already sign in")
 
-    }
+        }
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val imageButton = onView(withId(R.id.fabCreate))
+        imageButton.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(

@@ -24,7 +24,7 @@ import java.lang.Exception
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class EditProfileOpeningTest {
+class EditProfileTest {
 
     @Rule
     @JvmField

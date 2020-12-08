@@ -23,7 +23,7 @@ import java.lang.Exception
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class SignInActivityTest2 {
+class SignInWrongCredentialsTest {
 
     @Rule
     @JvmField
