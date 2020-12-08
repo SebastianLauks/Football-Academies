@@ -159,9 +159,9 @@ class NewsAdapter(
 
 
                 holder.videoView.setOnClickListener {
-
+                    // in order to not collapse card when click on video.
                 }
-// in order to not collapse card when click on video.
+
             }else{
                 holder.ivPost.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
                 holder.ivPost.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT

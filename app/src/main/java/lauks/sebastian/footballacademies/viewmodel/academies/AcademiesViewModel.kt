@@ -14,5 +14,6 @@ class AcademiesViewModel(private val academyRepository: AcademyRepository) : Vie
     fun addToSquad(academyCode: String, joinAcademyCallback: (joined: Boolean) -> Unit) = academyRepository.addToSquad(academyCode, joinAcademyCallback)
     fun startListening(loggedUserId: String, hideRefreshingIncdicator: () -> Unit) = academyRepository.startListening(loggedUserId, hideRefreshingIncdicator)
     fun fetchAcademy(academyId: String, callback: (academy: Academy) -> Unit) = academyRepository.fetchAcademy(academyId, callback)
+    fun generateNewCode(academyId: String, callback: () -> Unit) = academyRepository.generateNewCode(academyId,callback)
 
 }

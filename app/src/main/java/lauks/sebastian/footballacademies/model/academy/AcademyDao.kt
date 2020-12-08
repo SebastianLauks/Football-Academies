@@ -166,5 +166,28 @@ class AcademyDao {
             })
     }
 
+    fun generateNewCode(academyId: String, callback: () -> Unit){
+        academiesInFB.orderByChild("id").equalTo(academyId).addListenerForSingleValueEvent(object :ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.value != null){
+                    snapshot.children.forEach { child->
+
+                        @Suppress("UNCHECKED_CAST") val academyMap = child.value as HashMap<String, *>
+                        val academyKey = child.key!!
+                        val newCode = UniqueCodeGenerator.generateHash(10)
+
+                        academiesInFB.child(academyKey).child("code").setValue(newCode)
+                        callback()
+                    }
+                }
+
+                        }
+        })
+    }
+
     fun getAcademies() = academies as LiveData<List<Academy>>
 }

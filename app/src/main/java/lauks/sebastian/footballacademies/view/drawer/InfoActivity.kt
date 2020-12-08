@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_info.*
 import lauks.sebastian.footballacademies.R
+import lauks.sebastian.footballacademies.utilities.CustomDialogGenerator
 import lauks.sebastian.footballacademies.utilities.InjectorUtils
 import lauks.sebastian.footballacademies.viewmodel.academies.AcademiesViewModel
 
@@ -35,11 +36,7 @@ class InfoActivity : AppCompatActivity() {
 
 
         switch1.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked){
-                tv_info_code.text = academyCode
-            }else{
-                tv_info_code.text = "**********"
-            }
+            setCodeTextView(isChecked)
         }
 
         tv_info_code.setOnClickListener {
@@ -58,8 +55,30 @@ class InfoActivity : AppCompatActivity() {
             true
         }
 
+        bt_new_code.setOnClickListener {
+            CustomDialogGenerator.createCustomDialog(this, "Czy chcesz wygenerować nowy kod dostępu?", "Tak", "Nie"){
+                showLoading()
+                viewModel.generateNewCode(chosenAcademyId){
+                    viewModel.fetchAcademy(chosenAcademyId){
+                        academyCode = it.code
+                        setCodeTextView(switch1.isChecked)
+                        hideLoading()
+                    }
+                }
+            }
+        }
+
 
     }
+
+    private fun setCodeTextView(isChecked: Boolean){
+        if(isChecked){
+            tv_info_code.text = academyCode
+        }else{
+            tv_info_code.text = "**********"
+        }
+    }
+
 
     //back arrow on click
     override fun onSupportNavigateUp(): Boolean {

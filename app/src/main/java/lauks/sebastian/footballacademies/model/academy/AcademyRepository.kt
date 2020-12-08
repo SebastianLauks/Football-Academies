@@ -11,6 +11,7 @@ class AcademyRepository private constructor(private val academyDao: AcademyDao){
     fun startListening(loggedUserId: String, hideRefreshingIncdicator: () -> Unit) = academyDao.startListening(loggedUserId, hideRefreshingIncdicator)
     fun fetchAcademy(academyId: String, callback: (academy: Academy) -> Unit) = academyDao.fetchAcademy(academyId, callback)
     fun getAcademies() = academyDao.getAcademies()
+    fun generateNewCode(academyId: String, callback: () -> Unit) = academyDao.generateNewCode(academyId,callback)
 
     companion object{
         // Singleton instantiation you already know and love
