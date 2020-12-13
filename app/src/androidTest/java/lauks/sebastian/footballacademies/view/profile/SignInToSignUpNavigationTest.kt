@@ -4,7 +4,9 @@ package lauks.sebastian.footballacademies.view.profile
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -31,7 +33,29 @@ class SignInToSignUpNavigationTest {
 
     @Test
     fun signInToSignUp() {
-        try{
+        try {
+            testFunc()
+        } catch (e: Exception) {
+            Log.d("CheckSignIn", "User has been already sign in")
+            signOut()
+            testFunc()
+        }
+    }
+
+    private fun signOut() {
+        Espresso.pressBack()
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatButton2 = onView(withId(android.R.id.button1))
+        appCompatButton2.perform(ViewActions.scrollTo(), click())
+
+    }
+
+    private fun testFunc(){
         val appCompatButton = onView(
             allOf(
                 withId(R.id.bt_sign_up_ref), withText("Rejestracja"),
@@ -81,11 +105,8 @@ class SignInToSignUpNavigationTest {
 //            )
 //        )
         editText3.check(matches(isDisplayed()))
-        }catch (e: Exception){
-        Log.d("CheckSignIn", "User has been already sign in")
+    }
 
-    }
-    }
 
     private fun childAtPosition(
         parentMatcher: Matcher<View>, position: Int

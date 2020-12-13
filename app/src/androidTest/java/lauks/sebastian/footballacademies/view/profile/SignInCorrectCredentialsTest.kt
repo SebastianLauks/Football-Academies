@@ -4,6 +4,7 @@ package lauks.sebastian.footballacademies.view.profile
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -32,6 +33,36 @@ class SignInCorrectCredentialsTest {
     @Test
     fun signInSuccesfullTest() {
         try{
+            signIn()
+        }catch (e: Exception){
+            Log.d("CheckSignIn", "User has been already sign in")
+            signOut()
+            signIn()
+        }
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val imageButton = onView(withId(R.id.fabCreate))
+        imageButton.check(matches(isDisplayed()))
+    }
+
+    private fun signOut(){
+        Espresso.pressBack()
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatButton2 = onView(withId(android.R.id.button1))
+        appCompatButton2.perform(scrollTo(), click())
+
+    }
+    private fun signIn(){
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.et_login),
@@ -88,20 +119,8 @@ class SignInCorrectCredentialsTest {
             )
         )
         appCompatButton.perform(click())
-        }catch (e: Exception){
-            Log.d("CheckSignIn", "User has been already sign in")
-
-        }
-
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        val imageButton = onView(withId(R.id.fabCreate))
-        imageButton.check(matches(isDisplayed()))
     }
+
 
     private fun childAtPosition(
         parentMatcher: Matcher<View>, position: Int

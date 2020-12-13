@@ -4,6 +4,7 @@ package lauks.sebastian.footballacademies.view.profile
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -33,61 +34,11 @@ class JoinToAcademyTest {
     @Test
     fun joinToAcademyTest() {
         try {
-            val appCompatEditText = onView(
-                allOf(
-                    withId(R.id.et_login),
-                    childAtPosition(
-                        childAtPosition(
-                            withId(R.id.layout_content),
-                            1
-                        ),
-                        0
-                    ),
-                    isDisplayed()
-                )
-            )
-            appCompatEditText.perform(replaceText("user"), closeSoftKeyboard())
-            try {
-                Thread.sleep(1000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-            val appCompatEditText2 = onView(
-                allOf(
-                    withId(R.id.et_password),
-                    childAtPosition(
-                        childAtPosition(
-                            withId(R.id.layout_content),
-                            1
-                        ),
-                        1
-                    ),
-                    isDisplayed()
-                )
-            )
-            appCompatEditText2.perform(replaceText("123"), closeSoftKeyboard())
-            try {
-                Thread.sleep(1000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-            val appCompatButton = onView(
-                allOf(
-                    withId(R.id.bt_sign_in), withText("Zaloguj się"),
-                    childAtPosition(
-                        childAtPosition(
-                            withId(R.id.layout_content),
-                            1
-                        ),
-                        2
-                    ),
-                    isDisplayed()
-                )
-            )
-            appCompatButton.perform(click())
+            signIn()
         } catch (e: Exception) {
             Log.d("CheckSignIn", "User has been already sign in")
-
+            signOut()
+            signIn()
         }
         try {
             Thread.sleep(1000)
@@ -146,6 +97,78 @@ class JoinToAcademyTest {
             )
         )
         textView.check(matches(withText("Dołącz do akademii")))
+    }
+
+    private fun signOut() {
+        Espresso.pressBack()
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatButton2 = onView(withId(android.R.id.button1))
+        appCompatButton2.perform(scrollTo(), click())
+
+    }
+
+    private fun signIn() {
+        val appCompatEditText = onView(
+            allOf(
+                withId(R.id.et_login),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.layout_content),
+                        1
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText.perform(replaceText("user"), closeSoftKeyboard())
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatEditText2 = onView(
+            allOf(
+                withId(R.id.et_password),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.layout_content),
+                        1
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatEditText2.perform(replaceText("123"), closeSoftKeyboard())
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatButton = onView(
+            allOf(
+                withId(R.id.bt_sign_in), withText("Zaloguj się"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.layout_content),
+                        1
+                    ),
+                    2
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatButton.perform(click())
     }
 
     private fun childAtPosition(

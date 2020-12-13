@@ -4,6 +4,7 @@ package lauks.sebastian.footballacademies.view.profile
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -33,9 +34,60 @@ class EditProfileTest {
     @Test
     fun editProfileOpeningTest() {
 
-        try{
+        try {
+            signIn()
+        } catch (e: Exception) {
+            Log.d("CheckSignIn", "User has been already sign in")
+            signOut()
+            signIn()
+        }
 
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
 
+        val actionMenuItemView = onView(
+            allOf(
+                withId(R.id.mi_edit_profile), withContentDescription("Edytuj profil"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.action_bar),
+                        1
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        actionMenuItemView.perform(click())
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val textView = onView(withId(R.id.tv_edit_profile_firstname))
+
+        textView.check(matches(isDisplayed()))
+    }
+
+    private fun signOut() {
+        Espresso.pressBack()
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatButton2 = onView(withId(android.R.id.button1))
+        appCompatButton2.perform(scrollTo(), click())
+
+    }
+
+    private fun signIn() {
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.et_login),
@@ -92,41 +144,6 @@ class EditProfileTest {
             )
         )
         appCompatButton.perform(click())
-        }catch (e: Exception){
-            Log.d("CheckSignIn", "User has been already sign in")
-
-        }
-
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        val actionMenuItemView = onView(
-            allOf(
-                withId(R.id.mi_edit_profile), withContentDescription("Edytuj profil"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.action_bar),
-                        1
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        actionMenuItemView.perform(click())
-
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        val textView = onView( withId(R.id.tv_edit_profile_firstname))
-
-        textView.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(

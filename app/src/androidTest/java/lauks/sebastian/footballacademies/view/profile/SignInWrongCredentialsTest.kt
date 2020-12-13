@@ -4,6 +4,7 @@ package lauks.sebastian.footballacademies.view.profile
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -31,7 +32,29 @@ class SignInWrongCredentialsTest {
 
     @Test
     fun signInActivityTest2() {
-        try{
+        try {
+            testFunction()
+        } catch (e: Exception) {
+            Log.d("CheckSignIn", "User has been already sign in")
+            signOut()
+            testFunction()
+        }
+    }
+
+    private fun signOut() {
+        Espresso.pressBack()
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        val appCompatButton2 = onView(withId(android.R.id.button1))
+        appCompatButton2.perform(scrollTo(), click())
+
+    }
+
+    private fun testFunction() {
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.et_login),
@@ -91,10 +114,6 @@ class SignInWrongCredentialsTest {
         }
         val editText = onView(withId(R.id.et_login))
         editText.check(matches(withText("wrong")))
-        }catch (e: Exception){
-            Log.d("CheckSignIn", "User has been already sign in")
-
-        }
     }
 
     private fun childAtPosition(
