@@ -40,38 +40,28 @@ class EditProfileTest {
             Log.d("CheckSignIn", "User has been already sign in")
             signOut()
             signIn()
+        } finally {
+
+
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+
+            val actionMenuItemView = onView(withId(R.id.mi_edit_profile))
+            actionMenuItemView.perform(click())
+
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+
+            val textView = onView(withId(R.id.tv_edit_profile_firstname))
+
+            textView.check(matches(isDisplayed()))
         }
-
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        val actionMenuItemView = onView(
-            allOf(
-                withId(R.id.mi_edit_profile), withContentDescription("Edytuj profil"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.action_bar),
-                        1
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        actionMenuItemView.perform(click())
-
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        val textView = onView(withId(R.id.tv_edit_profile_firstname))
-
-        textView.check(matches(isDisplayed()))
     }
 
     private fun signOut() {

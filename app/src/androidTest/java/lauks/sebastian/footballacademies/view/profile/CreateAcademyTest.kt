@@ -34,67 +34,40 @@ class CreateAcademyTest {
     @Test
     fun createAcademyTest() {
 
-        try{
+        try {
             singIn()
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("CheckSignIn", "User has been already sign in")
             signOut()
             singIn()
+        } finally {
+
+            try {
+                Thread.sleep(1500)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            val floatingActionButton = onView(withId(R.id.fab))
+            floatingActionButton.perform(click())
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            val floatingActionButton2 = onView(withId(R.id.fabCreate))
+
+            floatingActionButton2.perform(click())
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            val textView = onView( withId(R.id.title))
+            textView.check(matches(isDisplayed()))
         }
-        val floatingActionButton = onView(
-            allOf(
-                withId(R.id.fab),
-                childAtPosition(
-                    childAtPosition(
-                        withId(android.R.id.content),
-                        0
-                    ),
-                    3
-                ),
-                isDisplayed()
-            )
-        )
-        floatingActionButton.perform(click())
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        val floatingActionButton2 = onView(
-            allOf(
-                withId(R.id.fabCreate),
-                childAtPosition(
-                    childAtPosition(
-                        withId(android.R.id.content),
-                        0
-                    ),
-                    1
-                ),
-                isDisplayed()
-            )
-        )
-        floatingActionButton2.perform(click())
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        val textView = onView(
-            allOf(
-                withId(R.id.title), withText("Utwórz akademię."),
-                childAtPosition(
-                    childAtPosition(
-                        IsInstanceOf.instanceOf(android.widget.FrameLayout::class.java),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textView.check(matches(isDisplayed()))
     }
-    private fun signOut(){
+
+    private fun signOut() {
         Espresso.pressBack()
         try {
             Thread.sleep(1000)
@@ -106,7 +79,8 @@ class CreateAcademyTest {
         appCompatButton2.perform(scrollTo(), click())
 
     }
-    private fun singIn(){
+
+    private fun singIn() {
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.et_login),
@@ -164,6 +138,7 @@ class CreateAcademyTest {
         )
         appCompatButton.perform(click())
     }
+
     private fun childAtPosition(
         parentMatcher: Matcher<View>, position: Int
     ): Matcher<View> {

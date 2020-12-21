@@ -32,25 +32,27 @@ class SignInCorrectCredentialsTest {
 
     @Test
     fun signInSuccesfullTest() {
-        try{
+        try {
             signIn()
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("CheckSignIn", "User has been already sign in")
             signOut()
             signIn()
-        }
+        } finally {
 
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
 
-        val imageButton = onView(withId(R.id.fabCreate))
-        imageButton.check(matches(isDisplayed()))
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+
+            val imageButton = onView(withId(R.id.fabCreate))
+            imageButton.check(matches(isDisplayed()))
+        }
     }
 
-    private fun signOut(){
+    private fun signOut() {
         Espresso.pressBack()
         try {
             Thread.sleep(1000)
@@ -62,7 +64,8 @@ class SignInCorrectCredentialsTest {
         appCompatButton2.perform(scrollTo(), click())
 
     }
-    private fun signIn(){
+
+    private fun signIn() {
         val appCompatEditText = onView(
             allOf(
                 withId(R.id.et_login),

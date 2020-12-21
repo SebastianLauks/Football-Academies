@@ -39,64 +39,30 @@ class JoinToAcademyTest {
             Log.d("CheckSignIn", "User has been already sign in")
             signOut()
             signIn()
+        } finally {
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            val floatingActionButton = onView(withId(R.id.fab))
+            floatingActionButton.perform(click())
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            val floatingActionButton2 = onView(withId(R.id.fabJoin))
+
+            floatingActionButton2.perform(click())
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            val textView = onView(withId(R.id.title))
+            textView.check(matches(isDisplayed()))
         }
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        val floatingActionButton = onView(
-            allOf(
-                withId(R.id.fab),
-                childAtPosition(
-                    childAtPosition(
-                        withId(android.R.id.content),
-                        0
-                    ),
-                    3
-                ),
-                isDisplayed()
-            )
-        )
-        floatingActionButton.perform(click())
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        val floatingActionButton2 = onView(
-            allOf(
-                withId(R.id.fabJoin),
-                childAtPosition(
-                    childAtPosition(
-                        withId(android.R.id.content),
-                        0
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        floatingActionButton2.perform(click())
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        val textView = onView(
-            allOf(
-                withId(R.id.title), withText("Dołącz do akademii"),
-                childAtPosition(
-                    childAtPosition(
-                        IsInstanceOf.instanceOf(android.widget.FrameLayout::class.java),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        textView.check(matches(withText("Dołącz do akademii")))
     }
 
     private fun signOut() {
